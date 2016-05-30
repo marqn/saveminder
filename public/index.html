@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pl" ng-app="app" ng-controller="appCtrl" >
+  <head>
+    <meta charset="utf-8">
+    <title>SaveMinder - save it into your mind</title>
+
+    <link rel="stylesheet" href="assets/bootstrap.min.css" >
+    <script type="text/javascript" src="assets/angular.min.js" ></script>
+    <script type="text/javascript" src="assets/angular-route.min.js"></script>
+    <script type="text/javascript" src="assets/angular-strap.min.js"></script>
+
+    <!--<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/ui/0.4.0/firebase-ui-auth.js"></script>
+        <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/0.4.0/firebase-ui-auth.css" />-->
+    <!--<script type="text/javascript">
+      // Firebase config.
+      var config = {
+        'authDomain': 'saveminder.firebaseapp.com',
+        'apiKey': 'AIzaSyBMkJ2KFyRANZuyTnGJcBQBs3Uy3sxxkxI',
+      };
+
+      // FirebaseUI config.
+      var uiConfig = {
+        'signInSuccessUrl': '<url-to-redirect-to-on-success>',
+        'signInOptions': [
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+          firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+          firebase.auth.EmailAuthProvider.PROVIDER_ID
+        ],
+        // Terms of service url.
+        'tosUrl': '<your-tos-url>',
+      };
+
+      // Initialize the FirebaseUI Widget using Firebase.
+      var app = firebase.initializeApp(config);
+      var auth = app.auth();
+      var ui = new firebaseui.auth.AuthUI(auth);
+      // The start method will wait until the DOM is loaded.
+      ui.start('#firebaseui-auth-container', uiConfig);
+
+      initApp = function() {
+        auth.onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in.
+            var displayName = user.displayName;
+            var email = user.email;
+            var emailVerified = user.emailVerified;
+            var photoURL = user.photoURL;
+            var uid = user.uid;
+            var providerData = user.providerData;
+            user.getToken().then(function(accessToken) {
+              document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
+              document.getElementById('quickstart-sign-in').textContent = 'Sign out';
+              document.getElementById('quickstart-account-details').textContent = JSON.stringify({
+                displayName: displayName,
+                email: email,
+                emailVerified: emailVerified,
+                photoURL: photoURL,
+                uid: uid,
+                accessToken: accessToken,
+                providerData: providerData
+              }, null, '  ');
+            });
+          } else {
+            // User is signed out.
+            document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
+            document.getElementById('quickstart-sign-in').textContent = 'Sign in';
+            document.getElementById('quickstart-account-details').textContent = 'null';
+          }
+        }, function(error) {
+          console.log(error);
+        });
+      };
+
+      window.onload = function() {
+        initApp()
+      };
+    </script>-->
+
+    <script type="text/javascript" src="js/controller.js"></script>
+  </head>
+  <body>
+
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-toogle">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#/">
+          <span class="label label-primary">SaveMinder</span>
+      </a>
+    </div>
+    <div class="collapse navbar-collapse navbar-left" id="nav-toggle_left">
+      <ul class="nav navbar-nav">
+        <li ng-class="pageClass('/learn')" ><a href="#/learn">Nauka</a></li>
+        <li ng-class="pageClass('/word-manager')"><a href="#/word-manager">Manager wyrazów</a></li>
+      </ul>
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="nav-toggle">
+      <ul class="nav navbar-nav">
+        <li ng-class="pageClass('/login')" ><a href="#/login">Zaloguj</a></li>
+        <li ng-class="pageClass('/join')"><a href="#/join">Załóż konto</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div ng-view></div>
+  </div>
+
+  </body>
+</html>
