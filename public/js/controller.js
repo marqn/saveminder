@@ -29,6 +29,27 @@ app.config(function ($routeProvider) {
 
 app.controller('appCtrl', function ($scope, $location) {
 
+    $scope.words = [
+        {
+            first: 'facilitate',
+            second: 'ułatwić',
+            win: 0,
+            lost: 0,
+            data_added: 1464635337,
+            category: 1,
+            refresh: 0
+        },
+        {
+            first: 'flip',
+            second: 'przerzucać, kartkować',
+            win: 0,
+            lost: 0,
+            data_added: 1464635337,
+            category: 1,
+            refresh: 0
+        }
+    ];
+
     $scope.pageClass = function (path) {
         return (path == $location.path()) ? 'active' : '';
     };
