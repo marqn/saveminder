@@ -1,5 +1,26 @@
 var app = angular.module('app', ['ngRoute']);
 
+app.value('wordsObj', [
+    {
+        first: 'facilitate',
+        second: 'ułatwić',
+        win: 0,
+        lost: 0,
+        data_added: 1464635337,
+        category: 1,
+        refresh: 0
+    },
+    {
+        first: 'flip',
+        second: 'przerzucać, kartkować',
+        win: 0,
+        lost: 0,
+        data_added: 1464635337,
+        category: 1,
+        refresh: 0
+    }
+]);
+
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
@@ -29,27 +50,6 @@ app.config(function ($routeProvider) {
 
 app.controller('appCtrl', function ($scope, $location) {
 
-    $scope.words = [
-        {
-            first: 'facilitate',
-            second: 'ułatwić',
-            win: 0,
-            lost: 0,
-            data_added: 1464635337,
-            category: 1,
-            refresh: 0
-        },
-        {
-            first: 'flip',
-            second: 'przerzucać, kartkować',
-            win: 0,
-            lost: 0,
-            data_added: 1464635337,
-            category: 1,
-            refresh: 0
-        }
-    ];
-
     $scope.pageClass = function (path) {
         return (path == $location.path()) ? 'active' : '';
     };
@@ -59,12 +59,12 @@ app.controller('indexCtrl', function ($scope) {
 
 });
 
-app.controller('learnCtrl', function ($scope) {
-
+app.controller('learnCtrl', function ($scope, wordsObj) {
+    $scope.words = wordsObj;
 });
 
-app.controller('managerCtrl', function ($scope) {
-    $scope.info = "manager wyrazów";
+app.controller('managerCtrl', function ($scope, wordsObj) {
+    $scope.words = wordsObj;
 });
 
 app.controller('loginCtrl', function ($scope) {
