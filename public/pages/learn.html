@@ -2,35 +2,29 @@
     <div class="page-header">
         <h1>Learn!</h1>
     </div>
-    <h3>Select mode:</h3>
+    <h3>Select mode:{{mode}}</h3>
     <div class="row text-center">
         <div class="col-md-4">
-            <button class="btn btn-info btn-lg">
+            <button class="btn btn-info btn-lg" ng-click="mode = '20'">
                 Last 20
             </button>
         </div>
         <div class="col-md-4">
-            <button class="btn btn-info btn-lg">
+            <button class="btn btn-info btn-lg" ng-click="mode = 'all'">
                 All
             </button>
 
         </div>
         <div class="col-md-4">
-            <button class="btn btn-info btn-lg">
+            <button class="btn btn-info btn-lg" ng-click="mode = 'random'">
                 Random queue
             </button>
         </div>
     </div>
 
     <div>
-
         <div class="container text-center">
-            <h2>{{words[0].first}}</h2>
-            <h2>{{words[0].second}}</h2>
-            <div class="btn-group">
-                <button type="button" class="btn btn-success">Wiem</button>
-                <button type="button" class="btn btn-danger">Nie wiem</button>
-            </div>
+            <game-buttons id="gameBtn"></game-buttons>
         </div>
 
     </div>

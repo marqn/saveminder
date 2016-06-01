@@ -1,0 +1,35 @@
+<div class="btn-group" >
+
+    <div ng-if="sprawdz != 4">
+        <h2>
+            {{words[wordIndex].first}}
+        </h2>
+        <h2 ng-hide="sprawdz == 2">
+            ...?...
+        </h2>
+        <h2 ng-show="sprawdz == 2">
+            {{words[wordIndex].second}}
+        </h2>
+    </div>
+
+    <div ng-if="sprawdz == 1">
+        <button type="button" class="btn btn-success" ng-click="wiem()">
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Wiem
+        </button>
+        <button type="button" class="btn btn-danger" ng-click="niewiem()">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Nie wiem
+        </button>
+    </div>
+
+
+    <div ng-if="sprawdz == 2" >
+        <button type="button" class="btn btn-info" ng-click="next()">
+            Dalej
+        </button>
+    </div>
+
+    <div ng-if="sprawdz == 4">
+        <h1>Koniec</h1>
+        <h3>Statystyka:</h3>
+    </div>
+</div>

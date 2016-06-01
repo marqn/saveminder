@@ -21,6 +21,45 @@ app.value('wordsObj', [
     }
 ]);
 
+
+app.component('gameButtons', {
+    controller: function ($scope, wordsObj) {
+
+        $scope.sprawdz = 1; // 1,2,3
+        $scope.wordIndex = 0;
+        $scope.wiemCounter = 0;
+        $scope.niewiemCounter = 0;
+
+        $scope.words = wordsObj;
+
+        $scope.wiem = function () {
+            $scope.sprawdz++;
+            $scope.wiemCounter++;
+        };
+
+        $scope.niewiem = function () {
+            $scope.sprawdz++;
+            $scope.niewiemCounter++;
+        };
+
+        $scope.showHidden = function () {
+            $scope.sprawdz++;
+        };
+
+        $scope.next = function () {
+            $scope.sprawdz = 1;
+            if(wordsObj.length - 1 > $scope.wordIndex) {
+                $scope.wordIndex++;
+            } else
+            {
+                $scope.sprawdz = 4;
+            }
+        };
+    },
+    bindings: {},
+    templateUrl: 'components/game/game.html'
+});
+
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
@@ -60,6 +99,8 @@ app.controller('indexCtrl', function ($scope) {
 });
 
 app.controller('learnCtrl', function ($scope, wordsObj) {
+    $scope.mode;
+
     $scope.words = wordsObj;
 });
 
