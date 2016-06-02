@@ -1,3 +1,18 @@
+// Firebase config.
+/*var config = {
+    'authDomain': 'saveminder.firebaseapp.com',
+    'apiKey': 'AIzaSyBMkJ2KFyRANZuyTnGJcBQBs3Uy3sxxkxI',
+};
+// FirebaseUI config.
+var uiConfig = {
+    'signInOptions': [
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        firebase.auth.EmailAuthProvider.PROVIDER_ID
+    ],
+    // Terms of service url.
+    'tosUrl': '<your-tos-url>',
+};*/
+
 var app = angular.module('app', ['ngRoute']);
 
 app.value('wordsObj', [
@@ -22,7 +37,7 @@ app.value('wordsObj', [
 ]);
 
 
-app.component('gameButtons', {
+app.component('gameWindow', {
     controller: function ($scope, wordsObj) {
 
         $scope.sprawdz = 1; // 1,2,3
