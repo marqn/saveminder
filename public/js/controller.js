@@ -1,5 +1,5 @@
 // Firebase config.
-/*var config = {
+var config = {
     'authDomain': 'saveminder.firebaseapp.com',
     'apiKey': 'AIzaSyBMkJ2KFyRANZuyTnGJcBQBs3Uy3sxxkxI',
 };
@@ -8,10 +8,14 @@ var uiConfig = {
     'signInOptions': [
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID
-    ],
-    // Terms of service url.
-    'tosUrl': '<your-tos-url>',
-};*/
+    ]
+};
+
+// Initialize the FirebaseUI Widget using Firebase.
+var app = firebase.initializeApp(config);
+var auth = app.auth();
+var ui = new firebaseui.auth.AuthUI(auth);
+// The start method will wait until the DOM is loaded.
 
 var app = angular.module('app', ['ngRoute']);
 
@@ -63,10 +67,9 @@ app.component('gameWindow', {
 
         $scope.next = function () {
             $scope.sprawdz = 1;
-            if(wordsObj.length - 1 > $scope.wordIndex) {
+            if (wordsObj.length - 1 > $scope.wordIndex) {
                 $scope.wordIndex++;
-            } else
-            {
+            } else {
                 $scope.sprawdz = 4;
             }
         };
@@ -91,7 +94,7 @@ app.config(function ($routeProvider) {
         })
         .when('/login', {
             controller: 'loginCtrl',
-            templateUrl: 'pages/join.html'
+            templateUrl: 'pages/login.html'
         })
         .when('/join', {
             controller: 'joinCtrl',
@@ -125,6 +128,10 @@ app.controller('managerCtrl', function ($scope, wordsObj) {
 
 app.controller('loginCtrl', function ($scope) {
     $scope.info = "login page";
+
+    // if(ui.)
+    ui.start('#firebaseui-auth-container', uiConfig);
+
 });
 
 app.controller('joinCtrl', function ($scope) {

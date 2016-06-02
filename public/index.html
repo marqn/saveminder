@@ -18,7 +18,7 @@
 
     <script type="text/javascript">
       // Firebase config.
-      var config = {
+     /* var config = {
         'authDomain': 'saveminder.firebaseapp.com',
         'apiKey': 'AIzaSyBMkJ2KFyRANZuyTnGJcBQBs3Uy3sxxkxI',
       };
@@ -31,15 +31,16 @@
         ],
         // Terms of service url.
         'tosUrl': '<your-tos-url>',
-      };
+      };*/
 
-      // Initialize the FirebaseUI Widget using Firebase.
+     /* // Initialize the FirebaseUI Widget using Firebase.
       var app = firebase.initializeApp(config);
       var auth = app.auth();
       var ui = new firebaseui.auth.AuthUI(auth);
       // The start method will wait until the DOM is loaded.
-      ui.start('#firebaseui-auth-container', uiConfig);
+      ui.start('#firebaseui-auth-container', uiConfig);*/
 
+/*
       initApp = function() {
         auth.onAuthStateChanged(function(user) {
           if (user) {
@@ -73,10 +74,11 @@
           console.log(error);
         });
       };
+*/
 
-      window.onload = function() {
+      /*window.onload = function() {
         initApp()
-      };
+      };*/
     </script>
 
     <script type="text/javascript" src="js/controller.js"></script>
@@ -108,10 +110,10 @@
     </div>
   </nav>
 
-  <div id="firebaseui-auth-container"></div>
+<!--  <div id="firebaseui-auth-container"></div>
   <div id="quickstart-sign-in-status"></div>
   <div id="quickstart-sign-in"></div>
-  <div id="quickstart-account-details"></div>
+  <div id="quickstart-account-details"></div>-->
 
   <div class="container">
     <div ng-view></div>
