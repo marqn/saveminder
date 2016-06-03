@@ -12,12 +12,22 @@ var uiConfig = {
 };
 
 // Initialize the FirebaseUI Widget using Firebase.
-var app = firebase.initializeApp(config);
-var auth = app.auth();
+var appFirebase = firebase.initializeApp(config);
+var auth = appFirebase.auth();
 var ui = new firebaseui.auth.AuthUI(auth);
 // The start method will wait until the DOM is loaded.
 
-var app = angular.module('app', ['ngRoute']);
+/*window.onload = function() {
+ initApp()
+ };*/
+
+var app = angular.module('app', ['ngRoute', 'firebase']);
+
+app.value("settings",
+    {
+        isAddedFirebaseContainer: false
+    }
+);
 
 app.value('wordsObj', [
     {
@@ -44,7 +54,7 @@ app.value('wordsObj', [
 app.component('gameWindow', {
     controller: function ($scope, wordsObj) {
 
-        $scope.sprawdz = 1; // 1,2,3
+        $scope.sprawdz = 1; // 1,2,3,4
         $scope.wordIndex = 0;
         $scope.wiemCounter = 0;
         $scope.niewiemCounter = 0;
@@ -107,9 +117,52 @@ app.config(function ($routeProvider) {
 
 app.controller('appCtrl', function ($scope, $location) {
 
+    $scope.nameUser;
+
     $scope.pageClass = function (path) {
         return (path == $location.path()) ? 'active' : '';
     };
+
+    initApp = function () {
+        auth.onAuthStateChanged(function (user) {
+            if (user) {
+                // User is signed in.
+                var displayName = user.displayName;
+                var email = user.email;
+                var emailVerified = user.emailVerified;
+                var photoURL = user.photoURL;
+                var uid = user.uid;
+                var providerData = user.providerData;
+
+                user.getToken().then(function (accessToken) {
+                    $scope.userObj = user;
+                    console.log("$scope = " + $scope.userObj.displayName);
+                    /*document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
+                     document.getElementById('quickstart-sign-in').textContent = 'Sign out';
+                     document.getElementById('quickstart-account-details').textContent = JSON.stringify({
+                     displayName: displayName,
+                     email: email,
+                     emailVerified: emailVerified,
+                     photoURL: photoURL,
+                     uid: uid,
+                     accessToken: accessToken,
+                     providerData: providerData
+                     }, null, '  ');*/
+                });
+            } else {
+                // User is signed out.
+                /*document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
+                 document.getElementById('quickstart-sign-in').textContent = 'Sign in';
+                 document.getElementById('quickstart-account-details').textContent = 'null';*/
+            }
+        }, function (error) {
+            console.log(error);
+        });
+    };
+
+    initApp();
+
+
 });
 
 app.controller('indexCtrl', function ($scope) {
@@ -126,11 +179,15 @@ app.controller('managerCtrl', function ($scope, wordsObj) {
     $scope.words = wordsObj;
 });
 
-app.controller('loginCtrl', function ($scope) {
+app.controller('loginCtrl', function ($scope, settings) {
     $scope.info = "login page";
 
-    // if(ui.)
+    console.log("isAddedFirebaseContainer:" + settings.isAddedFirebaseContainer);
+    // if (!settings.isAddedFirebaseContainer) {
+    //     settings.isAddedFirebaseContainer = true;
     ui.start('#firebaseui-auth-container', uiConfig);
+    // }
+
 
 });
 
