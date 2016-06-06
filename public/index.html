@@ -12,15 +12,26 @@
     <script type="text/javascript" src="assets/angular-strap.min.js"></script>
 
     <!-- Firebase -->
-    <script type="text/javascript" src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.0.3/firebase.js"></script>
+
     <!-- AngularFire -->
-    <script type="text/javascript" src="https://cdn.firebase.com/libs/angularfire/1.2.0/angularfire.min.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/2.0.0/angularfire.min.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/ui/0.4.0/firebase-ui-auth.js"></script>
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/0.4.0/firebase-ui-auth.css"/>
 
+    <script>
+        // Initialize the Firebase SDK
+        var config = {
+            apiKey: 'AIzaSyBMkJ2KFyRANZuyTnGJcBQBs3Uy3sxxkxI',
+            authDomain: 'saveminder.firebaseapp.com',
+            databaseURL: 'https://saveminder.firebaseio.com/',
+            storageBucket: 'gs://saveminder.appspot.com'
+        };
+        firebase.initializeApp(config);
+    </script>
 
     <script type="text/javascript" src="js/controller.js"></script>
 </head>

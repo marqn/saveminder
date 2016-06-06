@@ -1,27 +1,11 @@
-// Firebase config.
-var config = {
-    'authDomain': 'saveminder.firebaseapp.com',
-    'apiKey': 'AIzaSyBMkJ2KFyRANZuyTnGJcBQBs3Uy3sxxkxI',
-};
-// FirebaseUI config.
-var uiConfig = {
-    'signInOptions': [
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        firebase.auth.EmailAuthProvider.PROVIDER_ID
-    ]
-};
-
-// Initialize the FirebaseUI Widget using Firebase.
-var appFirebase = firebase.initializeApp(config);
-var auth = appFirebase.auth();
-var ui = new firebaseui.auth.AuthUI(auth);
-// The start method will wait until the DOM is loaded.
-
-/*window.onload = function() {
- initApp()
- };*/
-
 var app = angular.module('app', ['ngRoute', 'firebase']);
+
+
+app.factory("Auth", ["$firebaseAuth",
+    function ($firebaseAuth) {
+        return $firebaseAuth();
+    }
+]);
 
 app.value("settings",
     {
@@ -107,8 +91,8 @@ app.config(function ($routeProvider) {
             templateUrl: 'pages/login.html'
         })
         .when('/join', {
-            controller: 'joinCtrl',
-            templateUrl: 'pages/join.html'
+            controller: 'signInCtrl',
+            templateUrl: 'pages/sign_in.html'
         })
         .otherwise({
             template: '<h1>Not Found</h1>'
@@ -117,51 +101,15 @@ app.config(function ($routeProvider) {
 
 app.controller('appCtrl', function ($scope, $location) {
 
-    $scope.nameUser;
+    $scope.auth = Auth;
+    $scope.auth.$onAuthStateChanged(function(authData) {
+        $scope.authData = authData;
+        console.log(authData);
+    });
 
     $scope.pageClass = function (path) {
         return (path == $location.path()) ? 'active' : '';
     };
-
-    initApp = function () {
-        auth.onAuthStateChanged(function (user) {
-            if (user) {
-                // User is signed in.
-                var displayName = user.displayName;
-                var email = user.email;
-                var emailVerified = user.emailVerified;
-                var photoURL = user.photoURL;
-                var uid = user.uid;
-                var providerData = user.providerData;
-
-                user.getToken().then(function (accessToken) {
-                    $scope.userObj = user;
-                    console.log("$scope = " + $scope.userObj.displayName);
-                    /*document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
-                     document.getElementById('quickstart-sign-in').textContent = 'Sign out';
-                     document.getElementById('quickstart-account-details').textContent = JSON.stringify({
-                     displayName: displayName,
-                     email: email,
-                     emailVerified: emailVerified,
-                     photoURL: photoURL,
-                     uid: uid,
-                     accessToken: accessToken,
-                     providerData: providerData
-                     }, null, '  ');*/
-                });
-            } else {
-                // User is signed out.
-                /*document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
-                 document.getElementById('quickstart-sign-in').textContent = 'Sign in';
-                 document.getElementById('quickstart-account-details').textContent = 'null';*/
-            }
-        }, function (error) {
-            console.log(error);
-        });
-    };
-
-    initApp();
-
 
 });
 
@@ -179,18 +127,79 @@ app.controller('managerCtrl', function ($scope, wordsObj) {
     $scope.words = wordsObj;
 });
 
-app.controller('loginCtrl', function ($scope, settings) {
+app.controller("loginCtrl", ["$scope", "Auth", function ($scope, Auth) {
     $scope.info = "login page";
 
-    console.log("isAddedFirebaseContainer:" + settings.isAddedFirebaseContainer);
-    // if (!settings.isAddedFirebaseContainer) {
-    //     settings.isAddedFirebaseContainer = true;
-    ui.start('#firebaseui-auth-container', uiConfig);
-    // }
+    $scope.createUser = function () {
+        $scope.message = null;
+        $scope.error = null;
 
+        Auth.$createUserWithEmailAndPassword(
+            $scope.email,
+            $scope.password
+        ).then(function (userData) {
+            $scope.message = "User created with uid: " + userData.uid;
+        }).catch(function (error) {
+            $scope.error = error;
+        });
+    };
 
-});
+    $scope.removeUser = function () {
+        $scope.message = null;
+        $scope.error = null;
 
-app.controller('joinCtrl', function ($scope) {
+        Auth.$removeUser({
+            email: $scope.email,
+            password: $scope.password
+        }).then(function () {
+            $scope.message = "User removed";
+        }).catch(function (error) {
+            $scope.error = error;
+        });
+    };
+}
+]);
+
+/*
+ app.controller('loginCtrl', function ($scope, settings) {
+ $scope.info = "login page";
+
+ // console.log("isAddedFirebaseContainer:" + settings.isAddedFirebaseContainer);
+ // if (!settings.isAddedFirebaseContainer) {
+ //     settings.isAddedFirebaseContainer = true;
+ // ui.start('#firebaseui-auth-container', uiConfig);
+ // }
+ });
+ */
+
+app.controller('signInCtrl', ["$scope", "Auth", function ($scope, Auth) {
     $scope.info = "join page";
-});
+
+    $scope.isLogged = function () {
+        var authData = Auth.$getAuth();
+
+        console.log(authData);
+
+        if (authData) {
+            console.log("Logged in as:", authData.uid);
+        } else {
+            console.log("Logged out");
+        }
+    };
+
+
+
+    $scope.loggin = function () {
+        Auth.$signInWithPopup("google").then(function (authData) {
+            console.log("Logged in as:", authData.uid);
+        }).catch(function (error) {
+            console.error("Authentication failed:", error);
+        });
+    };
+
+    $scope.auth = Auth;
+    $scope.auth.$onAuthStateChanged(function(authData) {
+        $scope.authData = authData;
+        console.log(authData);
+    });
+}]);
