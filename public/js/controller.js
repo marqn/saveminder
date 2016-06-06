@@ -86,11 +86,11 @@ app.config(function ($routeProvider) {
             controller: 'managerCtrl',
             templateUrl: 'pages/manager.html'
         })
-        .when('/login', {
-            controller: 'loginCtrl',
-            templateUrl: 'pages/login.html'
+        .when('/create_user', {
+            controller: 'createUserCtrl',
+            templateUrl: 'pages/create_user.html'
         })
-        .when('/join', {
+        .when('/sign_in', {
             controller: 'signInCtrl',
             templateUrl: 'pages/sign_in.html'
         })
@@ -101,11 +101,11 @@ app.config(function ($routeProvider) {
 
 app.controller('appCtrl', function ($scope, $location) {
 
-    $scope.auth = Auth;
+    /*$scope.auth = Auth;
     $scope.auth.$onAuthStateChanged(function(authData) {
         $scope.authData = authData;
         console.log(authData);
-    });
+    });*/
 
     $scope.pageClass = function (path) {
         return (path == $location.path()) ? 'active' : '';
@@ -127,8 +127,8 @@ app.controller('managerCtrl', function ($scope, wordsObj) {
     $scope.words = wordsObj;
 });
 
-app.controller("loginCtrl", ["$scope", "Auth", function ($scope, Auth) {
-    $scope.info = "login page";
+app.controller("createUserCtrl", ["$scope", "Auth", function ($scope, Auth) {
+    $scope.info = "create user page";
 
     $scope.createUser = function () {
         $scope.message = null;
@@ -160,20 +160,10 @@ app.controller("loginCtrl", ["$scope", "Auth", function ($scope, Auth) {
 }
 ]);
 
-/*
- app.controller('loginCtrl', function ($scope, settings) {
- $scope.info = "login page";
-
- // console.log("isAddedFirebaseContainer:" + settings.isAddedFirebaseContainer);
- // if (!settings.isAddedFirebaseContainer) {
- //     settings.isAddedFirebaseContainer = true;
- // ui.start('#firebaseui-auth-container', uiConfig);
- // }
- });
- */
-
 app.controller('signInCtrl', ["$scope", "Auth", function ($scope, Auth) {
-    $scope.info = "join page";
+    $scope.info = "login page";
+
+    $scope.auth = Auth;
 
     $scope.isLogged = function () {
         var authData = Auth.$getAuth();
@@ -181,23 +171,34 @@ app.controller('signInCtrl', ["$scope", "Auth", function ($scope, Auth) {
         console.log(authData);
 
         if (authData) {
-            console.log("Logged in as:", authData.uid);
+            console.log("Logged in as:", authData.email);
         } else {
             console.log("Logged out");
         }
     };
 
 
-
     $scope.loggin = function () {
-        Auth.$signInWithPopup("google").then(function (authData) {
-            console.log("Logged in as:", authData.uid);
+        Auth.$signInWithEmailAndPassword($scope.email, $scope.password).then(function (authData) {
+            console.log("Logged in as:", authData.email);
         }).catch(function (error) {
             console.error("Authentication failed:", error);
         });
     };
 
-    $scope.auth = Auth;
+    $scope.loginFromGoogle = function () {
+        Auth.$signInWithPopup("google").then(function (authData) {
+            console.log("Logged in as:", authData.email);
+        }).catch(function (error) {
+            console.error("Authentication failed:", error);
+        });
+    };
+
+    $scope.logout = function () {
+        $scope.auth.$signOut();
+    };
+
+
     $scope.auth.$onAuthStateChanged(function(authData) {
         $scope.authData = authData;
         console.log(authData);

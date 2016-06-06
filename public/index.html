@@ -12,15 +12,10 @@
     <script type="text/javascript" src="assets/angular-strap.min.js"></script>
 
     <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/3.0.3/firebase.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/3.0.3/firebase.js"></script>
 
     <!-- AngularFire -->
-    <script src="https://cdn.firebase.com/libs/angularfire/2.0.0/angularfire.min.js"></script>
-
-    <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/ui/0.4.0/firebase-ui-auth.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/0.4.0/firebase-ui-auth.css"/>
+    <script type="text/javascript" src="https://cdn.firebase.com/libs/angularfire/2.0.0/angularfire.min.js"></script>
 
     <script>
         // Initialize the Firebase SDK
@@ -58,10 +53,10 @@
 
     <div class="collapse navbar-collapse navbar-right" id="nav-toggle">
         <ul class="nav navbar-nav">
-            <li ng-hide="userObj" ng-class="pageClass('/login')"><a href="#/login">Zaloguj</a></li>
-            <li ng-hide="userObj" ng-class="pageClass('/join')"><a href="#/join">Załóż konto</a></li>
+            <li ng-hide="userObj" ng-class="pageClass('/create_user')"><a href="#/create_user">Załóż konto</a></li>
+            <li ng-hide="userObj" ng-class="pageClass('/sign_in')"><a href="#/sign_in">Zaloguj</a></li>
             <li ng-if="userObj"><a>Zalogowany jako: {{userObj.displayName}}</a></li>
-            <li ng-if="userObj"><a href="#/loggout">Wyloguj</a></li>
+            <li ng-if="userObj"><a ng-click="logout()">Wyloguj</a></li>
         </ul>
     </div>
 </nav>
