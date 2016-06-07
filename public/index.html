@@ -47,7 +47,8 @@
     <div class="collapse navbar-collapse navbar-left" id="nav-toggle_left">
         <ul class="nav navbar-nav">
             <li ng-show="userObj" ng-class="pageClass('/learn')"><a href="#/learn">Nauka</a></li>
-            <li ng-show="userObj" ng-class="pageClass('/word-manager')"><a href="#/word-manager">Manager wyrazów</a></li>
+            <li ng-show="userObj" ng-class="pageClass('/word-manager')"><a href="#/word-manager">Manager wyrazów</a>
+            </li>
         </ul>
     </div>
 
@@ -56,7 +57,13 @@
             <li ng-hide="userObj" ng-class="pageClass('/create_user')"><a href="#/create_user">Sign up</a></li>
             <li ng-hide="userObj" ng-class="pageClass('/sign_in')"><a href="#/sign_in">Login</a></li>
             <li ng-if="userObj"><a>Logged as: {{userObj.email}}</a></li>
-            <li ng-if="userObj" ng-class="pageClass('/logged')"><a href="#/sign_in"><button class="btn btn-danger" ng-click="logout()">Wyloguj</button></a></li>
+            <li ng-if="userObj" ng-class="pageClass('/logged')">
+                <a href="#/sign_in">
+                    <button class="btn btn-danger" ng-click="logout()">
+                        Log out
+                    </button>
+                </a>
+            </li>
         </ul>
     </div>
 </nav>
