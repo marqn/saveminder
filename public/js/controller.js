@@ -99,19 +99,23 @@ app.config(function ($routeProvider) {
         });
 });
 
-app.controller('appCtrl', function ($scope, $location) {
+app.controller('appCtrl', ["$scope", "$location", "Auth", function ($scope, $location, Auth) {
 
-    /*$scope.auth = Auth;
-    $scope.auth.$onAuthStateChanged(function(authData) {
-        $scope.authData = authData;
-        console.log(authData);
-    });*/
+    $scope.auth = Auth;
+    $scope.auth.$onAuthStateChanged(function (authData) {
+        $scope.userObj = authData;
+        console.log("onAuthStateChanged: " + authData);
+    });
+
+    $scope.logout = function () {
+        $scope.auth.$signOut();
+    };
 
     $scope.pageClass = function (path) {
         return (path == $location.path()) ? 'active' : '';
     };
 
-});
+}]);
 
 app.controller('indexCtrl', function ($scope) {
 
@@ -128,40 +132,26 @@ app.controller('managerCtrl', function ($scope, wordsObj) {
 });
 
 app.controller("createUserCtrl", ["$scope", "Auth", function ($scope, Auth) {
-    $scope.info = "create user page";
+    $scope.info = "Sign up";
 
     $scope.createUser = function () {
-        $scope.message = null;
-        $scope.error = null;
-
         Auth.$createUserWithEmailAndPassword(
             $scope.email,
             $scope.password
         ).then(function (userData) {
-            $scope.message = "User created with uid: " + userData.uid;
+            console.log("User " + userData.uid + " created successfully!");
+        }).then(function (authData) {
+            console.log("Logged in as:", authData.uid);
         }).catch(function (error) {
-            $scope.error = error;
+            console.error("Error: ", error);
         });
     };
 
-    $scope.removeUser = function () {
-        $scope.message = null;
-        $scope.error = null;
-
-        Auth.$removeUser({
-            email: $scope.email,
-            password: $scope.password
-        }).then(function () {
-            $scope.message = "User removed";
-        }).catch(function (error) {
-            $scope.error = error;
-        });
-    };
 }
 ]);
 
 app.controller('signInCtrl', ["$scope", "Auth", function ($scope, Auth) {
-    $scope.info = "login page";
+    $scope.info = "Login";
 
     $scope.auth = Auth;
 
@@ -178,7 +168,7 @@ app.controller('signInCtrl', ["$scope", "Auth", function ($scope, Auth) {
     };
 
 
-    $scope.loggin = function () {
+    $scope.loggIn = function () {
         Auth.$signInWithEmailAndPassword($scope.email, $scope.password).then(function (authData) {
             console.log("Logged in as:", authData.email);
         }).catch(function (error) {
@@ -194,13 +184,11 @@ app.controller('signInCtrl', ["$scope", "Auth", function ($scope, Auth) {
         });
     };
 
-    $scope.logout = function () {
-        $scope.auth.$signOut();
+    $scope.loginFromFacebook = function () {
+        Auth.$signInWithPopup('facebook').then(function (authData) {
+            console.log("Logged in as:", authData);
+        }).catch(function (error) {
+            console.error("Authentication failed:", error);
+        });
     };
-
-
-    $scope.auth.$onAuthStateChanged(function(authData) {
-        $scope.authData = authData;
-        console.log(authData);
-    });
 }]);

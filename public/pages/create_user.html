@@ -1,15 +1,18 @@
 <h1>{{info}}</h1>
 
-    Email: <input type="text" ng-model="email">
-    Password: <input type="text" ng-model="password">
+<form>
+    <div class="form-group">
+        <label for="inputEmail">Email:</label>
+        <input type="email" ng-model="email" class="form-control" id="inputEmail" placeholder="Email">
+    </div>
+    <div class="form-group">
+        <label for="inputPassword">Email:</label>
+        <input type="password" ng-model="password" class="form-control" id="inputPassword" placeholder="Password">
+    </div>
+    <div class="form-group">
+        <label for="inputPassword2">Repeat email:</label>
+        <input type="password" ng-model="password" class="form-control" id="inputPassword2" placeholder="Repeat password">
+    </div>
 
-    <br><br>
-
-    <button ng-click="createUser()">Create User</button>
-
-    <br><br>
-
-    <button ng-click="removeUser()">Remove User</button>
-
-    <p ng-if="message">Message: <strong>{{ message }}</strong></p>
-    <p ng-if="error">Error: <strong>{{ error }}</strong></p>
+    <button type="submit" ng-click="createUser()" class="btn btn-default">Create User</button>
+</form>

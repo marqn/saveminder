@@ -1,9 +1,35 @@
-<h1>{{info}}</h1>
+<div class="jumbotron">
+    <h2>Login</h2>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <button ng-click="loginFromGoogle()" class="btn btn-danger col-sm-4">Login With Google</button>
+        </div>
+        <div class="form-group">
+            <button ng-click="loginFromFacebook()" class="btn btn-info col-sm-4">Login With Facebook</button>
+        </div>
 
-Email: <input type="text" ng-model="email">
-Password: <input type="text" ng-model="password">
-<br>
-<button ng-click="loggin()">Zaloguj</button> <br>
-<button ng-click="loginFromGoogle()" class="btn btn-info">zaloguj z konta google</button> <br>
-<button ng-click="isLogged()">isLogged</button>
-<button ng-click="logout()">logout</button> <br>
+        <div class="form-group">
+            <label for="inputEmail" class="col-sm-1 control-label">Email:</label>
+            <input class="col-sm-3" type="text" id="inputEmail" ng-model="email" placeholder="Email">
+        </div>
+
+        <div class="form-group">
+            <label for="inputPassword" class="col-sm-1 control-label">Password:</label>
+            <input class="col-sm-3" type="password" id="inputPassword" ng-model="password" placeholder="Password">
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2">
+                <button type="submit" class="btn btn-success" ng-click="loggIn()">Login</button>
+            </div>
+        </div>
+    </form>
+
+
+
+
+    <p>
+        <button ng-click="isLogged()">isLogged</button>
+        <button ng-click="logout()">logout</button> <br>
+    </p>
+</div>

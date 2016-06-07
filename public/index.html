@@ -53,10 +53,10 @@
 
     <div class="collapse navbar-collapse navbar-right" id="nav-toggle">
         <ul class="nav navbar-nav">
-            <li ng-hide="userObj" ng-class="pageClass('/create_user')"><a href="#/create_user">Załóż konto</a></li>
-            <li ng-hide="userObj" ng-class="pageClass('/sign_in')"><a href="#/sign_in">Zaloguj</a></li>
-            <li ng-if="userObj"><a>Zalogowany jako: {{userObj.displayName}}</a></li>
-            <li ng-if="userObj"><a ng-click="logout()">Wyloguj</a></li>
+            <li ng-hide="userObj" ng-class="pageClass('/create_user')"><a href="#/create_user">Sign up</a></li>
+            <li ng-hide="userObj" ng-class="pageClass('/sign_in')"><a href="#/sign_in">Login</a></li>
+            <li ng-if="userObj"><a>Logged as: {{userObj.email}}</a></li>
+            <li ng-if="userObj" ng-class="pageClass('/logged')"><a href="#/sign_in"><button class="btn btn-danger" ng-click="logout()">Wyloguj</button></a></li>
         </ul>
     </div>
 </nav>
@@ -66,4 +66,3 @@
 </div>
 
 </body>
-</html>
