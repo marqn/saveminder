@@ -7,6 +7,11 @@ app.factory("Auth", ["$firebaseAuth",
     }
 ]);
 
+app.factory("refFirebase", function () {
+        return firebase.database().ref("words");
+    }
+);
+
 app.value("settings",
     {
         isAddedFirebaseContainer: false
@@ -86,13 +91,17 @@ app.config(function ($routeProvider) {
             controller: 'managerCtrl',
             templateUrl: 'pages/manager.html'
         })
-        .when('/create_user', {
+        .when('/sign_up', {
             controller: 'createUserCtrl',
-            templateUrl: 'pages/create_user.html'
+            templateUrl: 'pages/sign_up.html'
         })
         .when('/sign_in', {
             controller: 'signInCtrl',
             templateUrl: 'pages/sign_in.html'
+        })
+        .when('/add_word', {
+            controller: 'addWordCtrl',
+            templateUrl: 'pages/add_word.html'
         })
         .otherwise({
             template: '<h1>Not Found</h1>'
@@ -139,12 +148,12 @@ app.controller("createUserCtrl", ["$scope", "Auth", function ($scope, Auth) {
             $scope.email,
             $scope.password
         ).then(function (userData) {
-            console.log("User " + userData.uid + " created successfully!");
-        }).then(function (authData) {
-            console.log("Logged in as:", authData.uid);
-        }).catch(function (error) {
-            console.error("Error: ", error);
-        });
+                console.log("User " + userData.uid + " created successfully!");
+            }).then(function (authData) {
+                console.log("Logged in as:", authData.uid);
+            }).catch(function (error) {
+                console.error("Error: ", error);
+            });
     };
 
 }
@@ -189,6 +198,37 @@ app.controller('signInCtrl', ["$scope", "Auth", function ($scope, Auth) {
             console.log("Logged in as:", authData);
         }).catch(function (error) {
             console.error("Authentication failed:", error);
+        });
+    };
+}]);
+
+app.controller('addWordCtrl', ["$scope", "$firebaseArray", "$firebaseArray", "refFirebase", function ($scope, $firebaseObject, $firebaseArray ,refFirebase) {
+    $scope.saveWord = function () {
+
+        var ref = refFirebase;
+
+        var list = $firebaseArray(ref);
+
+        list.$watch(function (event) {
+            console.log(event);
+        });
+
+        var wordObj =
+        {
+            first: $scope.first,
+            second: $scope.second,
+            refresh: 0,
+            data_added: Math.round(new Date().getTime() / 1000)
+        };
+
+        list.$add(wordObj).then(function (ref) {
+
+
+            $scope.first = '';
+            $scope.second = '';
+
+        }, function (error) {
+            console.log("Error:", error);
         });
     };
 }]);

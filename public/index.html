@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <title>SaveMinder - save it into your mind</title>
 
+    <script type="text/javascript" src="assets/jquery.min.js"></script>
+
+    <script type="text/javascript" src="assets/bootstrap.min.js"></script>
     <link rel="stylesheet" href="assets/bootstrap.min.css">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 
@@ -54,7 +57,7 @@
 
     <div class="collapse navbar-collapse navbar-right" id="nav-toggle">
         <ul class="nav navbar-nav">
-            <li ng-hide="userObj" ng-class="pageClass('/create_user')"><a href="#/create_user">Sign up</a></li>
+            <li ng-hide="userObj" ng-class="pageClass('/sign_up')"><a href="#/sign_up">Sign up</a></li>
             <li ng-hide="userObj" ng-class="pageClass('/sign_in')"><a href="#/sign_in">Login</a></li>
             <li ng-if="userObj"><a>Logged as: {{userObj.email}}</a></li>
             <li ng-if="userObj" ng-class="pageClass('/logged')">

@@ -1,0 +1,28 @@
+<h1>Add new word:</h1>
+
+<form>
+    <div class="form-group">
+        <label for="inputCategory">Category:</label>
+        <div class="btn-group">
+            <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Large button <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#">first category</a></li>
+                <li><a href="#">second category</a></li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <label for="inputFirst">First:</label>
+        <input type="first" ng-model="first" class="form-control" id="inputFirst" placeholder="first">
+    </div>
+
+    <div class="form-group">
+        <label for="inputSecond">Second:</label>
+        <input type="second" ng-model="second" class="form-control" id="inputSecond" placeholder="second">
+    </div>
+
+    <button type="submit" ng-click="saveWord()" class="btn btn-default">Save</button>
+</form>

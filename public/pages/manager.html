@@ -1,8 +1,10 @@
 <div>
     <div class="page-header">
-        <h1>Lista wyrazów</h1>
+        <h1>List of your words:</h1>
     </div>
-
+    <div>
+        <a href="#/add_word" class="btn btn-success">Add new</a>
+    </div>
     <div class="panel panel-default">
         <table class="table table-responsive">
             <thead>
@@ -10,14 +12,18 @@
                 <th class="text-center">#</th>
                 <th>First:</th>
                 <th>Second:</th>
+                <th>Date added:</th>
+                <th>Refresh:</th>
                 <th>Operations:</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="word in words" >
+            <tr ng-repeat="word in words">
                 <td>{{word.id}}</td>
                 <td>{{word.first}}</td>
                 <td>{{word.second}}</td>
+                <td>{{word.data_added | date:'dd-MM-yyyy'}}</td>
+                <td>{{word.refresh}}</td>
                 <td>
                     <a class="btn btn-success btn-sm" href="#" role="button">Edit</a>
                     <a class="btn btn-danger btn-sm" href="#" role="button">Delete</a>
