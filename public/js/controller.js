@@ -237,7 +237,7 @@ app.controller('addWordCtrl', ["$scope", "$firebaseArray", "refFirebase", "Auth"
                 win: 0,
                 lost: 0,
                 category: 1,
-                data_added: Math.round(new Date().getTime() / 1000)
+                data_added: Math.round(new Date().getTime())
             };
 
             list.$add(wordObj).then(function (ref) {
