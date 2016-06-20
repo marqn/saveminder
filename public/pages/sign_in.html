@@ -1,29 +1,36 @@
 
     <h2>Login</h2>
-    <form class="form-horizontal">
-        <div class="form-group">
-            <button ng-click="loginFromGoogle()" class="btn btn-danger col-sm-4">Login With Google</button>
-        </div>
-        <div class="form-group">
-            <button ng-click="loginFromFacebook()" class="btn btn-info col-sm-4">Login With Facebook</button>
-        </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <button ng-click="loginFromGoogle()" class="btn btn-danger btn-lg btn-block">Login With Google</button>
+                </div>
+                <div class="form-group">
+                    <button ng-click="loginFromFacebook()" class="btn btn-info btn-lg btn-block">Login With Facebook</button>
+                </div>
 
-        <div class="form-group">
-            <label for="inputEmail" class="col-sm-1 control-label">Email:</label>
-            <input class="col-sm-3" type="text" id="inputEmail" ng-model="email" placeholder="Email">
-        </div>
+                <div class="form-group">
+                    <input type="email" ng-model="email" class="form-control" id="inputEmail" placeholder="Email">
+                </div>
 
-        <div class="form-group">
-            <label for="inputPassword" class="col-sm-1 control-label">Password:</label>
-            <input class="col-sm-3" type="password" id="inputPassword" ng-model="password" placeholder="Password">
-        </div>
+                <div class="form-group">
+                    <input type="password" ng-model="password" class="form-control" id="inputPassword" placeholder="Password">
+                </div>
 
-        <div class="form-group">
-            <div class="col-sm-offset-2">
-                <button type="submit" class="btn btn-success" ng-click="loggIn()">Login</button>
-            </div>
+                <div class="form-group">
+                    <div >
+                        <button type="submit" class="btn btn-success btn-lg btn-block" ng-click="loggIn()">Login</button>
+                    </div>
+                </div>
+            </form>
         </div>
-    </form>
+        <div class="col-md-4"></div>
+    </div>
+
+
+
 
 
 

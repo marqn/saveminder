@@ -8,13 +8,7 @@ app.factory("Auth", ["$firebaseAuth",
 ]);
 
 app.factory("refFirebase", function () {
-        return firebase.database().ref("words");
-    }
-);
-
-app.value("settings",
-    {
-        isAddedFirebaseContainer: false
+        return firebase.database();
     }
 );
 
@@ -113,7 +107,8 @@ app.controller('appCtrl', ["$scope", "$location", "Auth", function ($scope, $loc
     $scope.auth = Auth;
     $scope.auth.$onAuthStateChanged(function (authData) {
         $scope.userObj = authData;
-        console.log("onAuthStateChanged: " + authData);
+        if (authData)
+            console.log("onAuthStateChanged: " + authData.uid);
     });
 
     $scope.logout = function () {
@@ -148,12 +143,12 @@ app.controller("createUserCtrl", ["$scope", "Auth", function ($scope, Auth) {
             $scope.email,
             $scope.password
         ).then(function (userData) {
-                console.log("User " + userData.uid + " created successfully!");
-            }).then(function (authData) {
-                console.log("Logged in as:", authData.uid);
-            }).catch(function (error) {
-                console.error("Error: ", error);
-            });
+            console.log("User " + userData.uid + " created successfully!");
+        }).then(function (authData) {
+            console.log("Logged in as:", authData.uid);
+        }).catch(function (error) {
+            console.error("Error: ", error);
+        });
     };
 
 }
@@ -202,33 +197,35 @@ app.controller('signInCtrl', ["$scope", "Auth", function ($scope, Auth) {
     };
 }]);
 
-app.controller('addWordCtrl', ["$scope", "$firebaseArray", "$firebaseArray", "refFirebase", function ($scope, $firebaseObject, $firebaseArray ,refFirebase) {
-    $scope.saveWord = function () {
+app.controller('addWordCtrl', ["$scope", "$firebaseArray", "$firebaseArray", "refFirebase", "Auth",
+    function ($scope, $firebaseObject, $firebaseArray, refFirebase, Auth) {
+        $scope.saveWord = function () {
 
-        var ref = refFirebase;
+            var idUser = Auth.$getAuth().uid;
 
-        var list = $firebaseArray(ref);
+            var ref = refFirebase.ref("users").child(idUser).child('words');
 
-        list.$watch(function (event) {
-            console.log(event);
-        });
+            var list = $firebaseArray(ref);
 
-        var wordObj =
-        {
-            first: $scope.first,
-            second: $scope.second,
-            refresh: 0,
-            data_added: Math.round(new Date().getTime() / 1000)
+            var wordObj =
+            {
+                first: $scope.first,
+                second: $scope.second,
+                refresh: 0,
+                win: 0,
+                lost: 0,
+                category: 1,
+                data_added: Math.round(new Date().getTime() / 1000)
+            };
+
+            list.$add(wordObj).then(function (ref) {
+
+
+                $scope.first = '';
+                $scope.second = '';
+
+            }, function (error) {
+                console.log("Error:", error);
+            });
         };
-
-        list.$add(wordObj).then(function (ref) {
-
-
-            $scope.first = '';
-            $scope.second = '';
-
-        }, function (error) {
-            console.log("Error:", error);
-        });
-    };
-}]);
+    }]);
