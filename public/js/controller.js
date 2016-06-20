@@ -12,55 +12,52 @@ app.factory("refFirebase", function () {
     }
 );
 
-app.value('wordsObj', [
-    {
-        first: 'facilitate',
-        second: 'ułatwić',
-        win: 0,
-        lost: 0,
-        data_added: 1464635337,
-        category: 1,
-        refresh: 0
-    },
-    {
-        first: 'flip',
-        second: 'przerzucać, kartkować',
-        win: 0,
-        lost: 0,
-        data_added: 1464635337,
-        category: 1,
-        refresh: 0
+app.factory('getListOfWords', ["Auth", "refFirebase", "$firebaseArray",
+    function (Auth, refFirebase, $firebaseArray) {
+        var idUser = Auth.$getAuth().uid;
+        var ref = refFirebase.ref("users").child(idUser).child('words');
+
+        var list = $firebaseArray(ref);
+
+        console.log("idUser: " + idUser);
+
+        return list;
     }
 ]);
 
-
 app.component('gameWindow', {
-    controller: function ($scope, wordsObj) {
+    controller: function ($scope, getListOfWords) {
 
         $scope.sprawdz = 1; // 1,2,3,4
         $scope.wordIndex = 0;
         $scope.wiemCounter = 0;
         $scope.niewiemCounter = 0;
 
-        $scope.words = wordsObj;
+        $scope.words = getListOfWords;
 
         $scope.wiem = function () {
             $scope.sprawdz++;
             $scope.wiemCounter++;
+
+            $scope.words[$scope.wordIndex].win++;
+            $scope.words.$save($scope.wordIndex);
         };
 
         $scope.niewiem = function () {
             $scope.sprawdz++;
             $scope.niewiemCounter++;
-        };
 
-        $scope.showHidden = function () {
-            $scope.sprawdz++;
+            $scope.words[$scope.wordIndex].lost++;
+            $scope.words.$save($scope.wordIndex);
         };
 
         $scope.next = function () {
+
+            $scope.words[$scope.wordIndex].refresh++;
+            $scope.words.$save($scope.wordIndex);
+
             $scope.sprawdz = 1;
-            if (wordsObj.length - 1 > $scope.wordIndex) {
+            if ($scope.words.length - 1 > $scope.wordIndex) {
                 $scope.wordIndex++;
             } else {
                 $scope.sprawdz = 4;
@@ -107,7 +104,7 @@ app.controller('appCtrl', ["$scope", "$location", "Auth", function ($scope, $loc
     $scope.auth = Auth;
     $scope.auth.$onAuthStateChanged(function (authData) {
         $scope.userObj = authData;
-        if (authData)
+        if (authData && authData.uid)
             console.log("onAuthStateChanged: " + authData.uid);
     });
 
@@ -125,35 +122,22 @@ app.controller('indexCtrl', function ($scope) {
 
 });
 
-app.controller('learnCtrl', ["$scope", "$firebaseArray", "refFirebase", "Auth", "wordsObj",
-    function ($scope, $firebaseArray, refFirebase, Auth, wordsObj) {
+app.controller('learnCtrl', ["$scope",
+    function ($scope) {
 
         $scope.mode;
 
-        // todo: stworzyć dyrektywe która będzie pobierać lise words'ów
-        var idUser = Auth.$getAuth().uid;
-        var ref = refFirebase.ref("users").child(idUser).child('words');
+    }
+]);
 
-        var list = $firebaseArray(ref);
-        $scope.words = list;
+app.controller('managerCtrl', ["$scope", "getListOfWords",
+    function ($scope, getListOfWords) {
 
-        wordsObj = list;
+        $scope.words = getListOfWords;
 
-}]);
-
-app.controller('managerCtrl', ["$scope", "$firebaseArray", "refFirebase", "Auth",
-    function ($scope, $firebaseArray, refFirebase, Auth) {
-
-        var idUser = Auth.$getAuth().uid;
-        var ref = refFirebase.ref("users").child(idUser).child('words');
-
-        var list = $firebaseArray(ref);
-        $scope.words = list;
-        
-        $scope.deleteWord = function(index)
-        {
-            var item = list[index];
-            list.$remove(item);
+        $scope.deleteWord = function (index) {
+            var item = $scope.words[index];
+            $scope.words.$remove(item);
         }
     }
 ]);
@@ -166,12 +150,12 @@ app.controller("createUserCtrl", ["$scope", "Auth", function ($scope, Auth) {
             $scope.email,
             $scope.password
         ).then(function (userData) {
-            console.log("User " + userData.uid + " created successfully!");
-        }).then(function (authData) {
-            console.log("Logged in as:", authData.uid);
-        }).catch(function (error) {
-            console.error("Error: ", error);
-        });
+                console.log("User " + userData.uid + " created successfully!");
+            }).then(function (authData) {
+                console.log("Logged in as:", authData.uid);
+            }).catch(function (error) {
+                console.error("Error: ", error);
+            });
     };
 
 }
@@ -220,14 +204,11 @@ app.controller('signInCtrl', ["$scope", "Auth", function ($scope, Auth) {
     };
 }]);
 
-app.controller('addWordCtrl', ["$scope", "$firebaseArray", "refFirebase", "Auth",
-    function ($scope, $firebaseArray, refFirebase, Auth) {
+app.controller('addWordCtrl', ["$scope", "getListOfWords",
+    function ($scope, getListOfWords) {
         $scope.saveWord = function () {
 
-            var idUser = Auth.$getAuth().uid;
-            var ref = refFirebase.ref("users").child(idUser).child('words');
-
-            var list = $firebaseArray(ref);
+            var list = getListOfWords;
 
             var wordObj =
             {
@@ -241,7 +222,6 @@ app.controller('addWordCtrl', ["$scope", "$firebaseArray", "refFirebase", "Auth"
             };
 
             list.$add(wordObj).then(function (ref) {
-
 
                 $scope.first = '';
                 $scope.second = '';
