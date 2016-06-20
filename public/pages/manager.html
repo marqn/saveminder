@@ -19,14 +19,14 @@
             </thead>
             <tbody>
             <tr ng-repeat="word in words">
-                <td>{{word.id}}</td>
+                <td>{{$index+1}}</td>
                 <td>{{word.first}}</td>
                 <td>{{word.second}}</td>
                 <td>{{word.data_added | date:'dd-MM-yyyy'}}</td>
                 <td>{{word.refresh}}</td>
                 <td>
-                    <a class="btn btn-success btn-sm" href="#" role="button">Edit</a>
-                    <a class="btn btn-danger btn-sm" href="#" role="button">Delete</a>
+                    <a class="btn btn-success btn-sm" ng-click="deleteWord()" role="button">Edit</a>
+                    <a class="btn btn-danger btn-sm" ng-click="deleteWord($index)" role="button">Delete</a>
                 </td>
             </tr>
             </tbody>

@@ -125,15 +125,38 @@ app.controller('indexCtrl', function ($scope) {
 
 });
 
-app.controller('learnCtrl', function ($scope, wordsObj) {
-    $scope.mode;
+app.controller('learnCtrl', ["$scope", "$firebaseArray", "refFirebase", "Auth", "wordsObj",
+    function ($scope, $firebaseArray, refFirebase, Auth, wordsObj) {
 
-    $scope.words = wordsObj;
-});
+        $scope.mode;
 
-app.controller('managerCtrl', function ($scope, wordsObj) {
-    $scope.words = wordsObj;
-});
+        // todo: stworzyć dyrektywe która będzie pobierać lise words'ów
+        var idUser = Auth.$getAuth().uid;
+        var ref = refFirebase.ref("users").child(idUser).child('words');
+
+        var list = $firebaseArray(ref);
+        $scope.words = list;
+
+        wordsObj = list;
+
+}]);
+
+app.controller('managerCtrl', ["$scope", "$firebaseArray", "refFirebase", "Auth",
+    function ($scope, $firebaseArray, refFirebase, Auth) {
+
+        var idUser = Auth.$getAuth().uid;
+        var ref = refFirebase.ref("users").child(idUser).child('words');
+
+        var list = $firebaseArray(ref);
+        $scope.words = list;
+        
+        $scope.deleteWord = function(index)
+        {
+            var item = list[index];
+            list.$remove(item);
+        }
+    }
+]);
 
 app.controller("createUserCtrl", ["$scope", "Auth", function ($scope, Auth) {
     $scope.info = "Sign up";
@@ -197,12 +220,11 @@ app.controller('signInCtrl', ["$scope", "Auth", function ($scope, Auth) {
     };
 }]);
 
-app.controller('addWordCtrl', ["$scope", "$firebaseArray", "$firebaseArray", "refFirebase", "Auth",
-    function ($scope, $firebaseObject, $firebaseArray, refFirebase, Auth) {
+app.controller('addWordCtrl', ["$scope", "$firebaseArray", "refFirebase", "Auth",
+    function ($scope, $firebaseArray, refFirebase, Auth) {
         $scope.saveWord = function () {
 
             var idUser = Auth.$getAuth().uid;
-
             var ref = refFirebase.ref("users").child(idUser).child('words');
 
             var list = $firebaseArray(ref);
@@ -228,4 +250,5 @@ app.controller('addWordCtrl', ["$scope", "$firebaseArray", "$firebaseArray", "re
                 console.log("Error:", error);
             });
         };
-    }]);
+    }
+]);
