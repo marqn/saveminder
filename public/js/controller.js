@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute', 'firebase']);
+var app = angular.module('app', ['ngRoute', 'firebase', 'mgcrea.ngStrap']);
 
 
 app.factory("Auth", ["$firebaseAuth",
@@ -113,8 +113,8 @@ app.controller('appCtrl', ["$scope", "$location", "Auth", function ($scope, $loc
     $scope.auth = Auth;
     $scope.auth.$onAuthStateChanged(function (authData) {
         $scope.userObj = authData;
-        if (authData && authData.uid)
-            console.log("onAuthStateChanged: " + authData.uid);
+        // if (authData && authData.uid)
+        //     console.log("onAuthStateChanged: " + authData.uid);
     });
 
     $scope.logout = function () {
@@ -213,8 +213,18 @@ app.controller('signInCtrl', ["$scope", "Auth", function ($scope, Auth) {
     };
 }]);
 
-app.controller('addWordCtrl', ["$scope", "getListOfWords",
-    function ($scope, getListOfWords) {
+app.controller('addWordCtrl', ["$scope", "getListOfWords", "$alert",
+    function ($scope, getListOfWords, $alert) {
+
+        var alert = $alert({
+            title: 'Success!',
+            content: 'Word added succesfully.',
+            type: 'success',
+            container: '#alertContainer',
+            show: false,
+            delay: { hide: 1000 }
+        });
+
         $scope.saveWord = function () {
 
             var list = getListOfWords;
@@ -234,6 +244,7 @@ app.controller('addWordCtrl', ["$scope", "getListOfWords",
 
                 $scope.first = '';
                 $scope.second = '';
+                alert.show();
 
             }, function (error) {
                 console.log("Error:", error);
