@@ -36,19 +36,23 @@ app.component('gameWindow', {
         $scope.words = getListOfWords;
 
         $scope.wiem = function () {
-            $scope.sprawdz++;
+
             $scope.wiemCounter++;
 
             $scope.words[$scope.wordIndex].win++;
             $scope.words.$save($scope.wordIndex);
+
+            nextWord();
         };
 
         $scope.niewiem = function () {
-            $scope.sprawdz++;
+
             $scope.niewiemCounter++;
 
             $scope.words[$scope.wordIndex].lost++;
             $scope.words.$save($scope.wordIndex);
+
+            nextWord();
         };
 
         $scope.next = function () {
@@ -56,13 +60,18 @@ app.component('gameWindow', {
             $scope.words[$scope.wordIndex].refresh++;
             $scope.words.$save($scope.wordIndex);
 
+            $scope.sprawdz++;
+        };
+
+        nextWord = function()
+        {
             $scope.sprawdz = 1;
             if ($scope.words.length - 1 > $scope.wordIndex) {
                 $scope.wordIndex++;
             } else {
                 $scope.sprawdz = 4;
             }
-        };
+        }
     },
     bindings: {},
     templateUrl: 'components/game/game.html'
