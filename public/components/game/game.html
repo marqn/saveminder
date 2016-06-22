@@ -1,4 +1,4 @@
-<div class="btn-group" >
+<div class="btn-group">
 
     <div ng-if="sprawdz != 4">
         <h2>
@@ -22,7 +22,7 @@
     </div>
 
 
-    <div ng-if="sprawdz == 1" >
+    <div ng-if="sprawdz == 1">
         <button type="button" class="btn btn-info" ng-click="next()">
             Check
         </button>
@@ -31,6 +31,9 @@
     <div ng-if="sprawdz == 4">
         <h1>Koniec</h1>
         <h3>Statystyka:</h3>
-
+        <p>Ilość słówek:{{wiemCounter + niewiemCounter}}</p>
+        <p>Wyuczone:{{wiemCounter}}</p>
+        <p>Zapomniane:{{niewiemCounter}}</p>
+        <p><button class="btn btn-primary" ng-click="startGame()">Rozpocznij jeszcze raz</button></p>
     </div>
 </div>

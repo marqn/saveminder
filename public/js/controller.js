@@ -18,22 +18,22 @@ app.factory('getListOfWords', ["Auth", "refFirebase", "$firebaseArray",
         var ref = refFirebase.ref("users").child(idUser).child('words');
 
         var list = $firebaseArray(ref);
-
-        console.log("idUser: " + idUser);
-
         return list;
     }
 ]);
 
 app.component('gameWindow', {
     controller: function ($scope, getListOfWords) {
+        initGame = function () {
+            $scope.sprawdz = 1; // 1,2,3,4
+            $scope.wordIndex = 0;
+            $scope.wiemCounter = 0;
+            $scope.niewiemCounter = 0;
 
-        $scope.sprawdz = 1; // 1,2,3,4
-        $scope.wordIndex = 0;
-        $scope.wiemCounter = 0;
-        $scope.niewiemCounter = 0;
+            $scope.words = getListOfWords;
+        };
 
-        $scope.words = getListOfWords;
+        initGame();
 
         $scope.wiem = function () {
 
@@ -62,6 +62,12 @@ app.component('gameWindow', {
 
             $scope.sprawdz++;
         };
+
+        $scope.startGame = function () {
+            initGame();
+        };
+
+
 
         nextWord = function()
         {
@@ -135,6 +141,7 @@ app.controller('learnCtrl', ["$scope",
     function ($scope) {
 
         $scope.mode;
+
 
     }
 ]);
