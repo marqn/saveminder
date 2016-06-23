@@ -2,13 +2,17 @@
 
     <div ng-if="sprawdz != 4">
         <h2>
-            {{words[wordIndex].first}}
+            <span class="label label-primary">
+                {{words[wordIndex].first | lowercase}}
+            </span>
         </h2>
         <h2 ng-hide="sprawdz == 2">
             ...?...
         </h2>
         <h2 ng-show="sprawdz == 2">
-            {{words[wordIndex].second}}
+            <span class="label label-success">
+                {{words[wordIndex].second | lowercase}}
+            </span>
         </h2>
     </div>
 

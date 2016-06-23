@@ -24,6 +24,23 @@ app.factory('getListOfWords', ["Auth", "refFirebase", "$firebaseArray",
 
 app.component('gameWindow', {
     controller: function ($scope, getListOfWords) {
+        var shuffleArray = function(array) {
+            var m = array.length, t, i;
+
+            // While there remain elements to shuffle
+            while (m) {
+                // Pick a remaining element…
+                i = Math.floor(Math.random() * m--);
+
+                // And swap it with the current element.
+                t = array[m];
+                array[m] = array[i];
+                array[i] = t;
+            }
+
+            return array;
+        }
+
         initGame = function () {
             $scope.sprawdz = 1; // 1,2,3,4
             $scope.wordIndex = 0;
@@ -31,6 +48,7 @@ app.component('gameWindow', {
             $scope.niewiemCounter = 0;
 
             $scope.words = getListOfWords;
+            $scope.words = shuffleArray($scope.words);
         };
 
         initGame();
