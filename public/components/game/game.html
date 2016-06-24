@@ -1,14 +1,17 @@
 <div class="btn-group">
 
+
     <div ng-if="sprawdz != 4">
         <h2>
             <span class="label label-primary">
                 {{words[wordIndex].first | lowercase}}
             </span>
         </h2>
+
         <h2 ng-hide="sprawdz == 2">
             ...?...
         </h2>
+
         <h2 ng-show="sprawdz == 2">
             <span class="label label-success">
                 {{words[wordIndex].second | lowercase}}

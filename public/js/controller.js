@@ -12,6 +12,8 @@ app.factory("refFirebase", function () {
     }
 );
 
+app.value("selectedWord", null);
+
 app.factory('getListOfWords', ["Auth", "refFirebase", "$firebaseArray",
     function (Auth, refFirebase, $firebaseArray) {
         var idUser = Auth.$getAuth().uid;
@@ -24,7 +26,7 @@ app.factory('getListOfWords', ["Auth", "refFirebase", "$firebaseArray",
 
 app.component('gameWindow', {
     controller: function ($scope, getListOfWords) {
-        var shuffleArray = function(array) {
+        var shuffleArray = function (array) {
             var m = array.length, t, i;
 
             // While there remain elements to shuffle
@@ -39,7 +41,7 @@ app.component('gameWindow', {
             }
 
             return array;
-        }
+        };
 
         initGame = function () {
             $scope.sprawdz = 1; // 1,2,3,4
@@ -50,8 +52,6 @@ app.component('gameWindow', {
             $scope.words = getListOfWords;
             $scope.words = shuffleArray($scope.words);
         };
-
-        initGame();
 
         $scope.wiem = function () {
 
@@ -85,10 +85,7 @@ app.component('gameWindow', {
             initGame();
         };
 
-
-
-        nextWord = function()
-        {
+        nextWord = function () {
             $scope.sprawdz = 1;
             if ($scope.words.length - 1 > $scope.wordIndex) {
                 $scope.wordIndex++;
@@ -96,6 +93,8 @@ app.component('gameWindow', {
                 $scope.sprawdz = 4;
             }
         }
+
+        initGame();
     },
     bindings: {},
     templateUrl: 'components/game/game.html'
@@ -127,18 +126,44 @@ app.config(function ($routeProvider) {
             controller: 'addWordCtrl',
             templateUrl: 'pages/add_word.html'
         })
+        .when('/edit_word/:id', {
+            controller: 'editWordCtrl',
+            templateUrl: 'pages/add_word.html'
+        })
         .otherwise({
             template: '<h1>Not Found</h1>'
         });
 });
 
-app.controller('appCtrl', ["$scope", "$location", "Auth", function ($scope, $location, Auth) {
+app.controller('appCtrl', ["$scope", "$location", "Auth", "refFirebase", "$firebaseObject",
+    function ($scope, $location, Auth, refFirebase, $firebaseObject) {
+
+    saveDataUser = function () {
+        var idUser = Auth.$getAuth().uid;
+        var ref = refFirebase.ref("users").child(idUser).child('userData');
+        var obj = $firebaseObject(ref);
+
+        obj.$loaded().then(function () {
+            console.log(obj.email);
+            obj.lastLogin = new Date().getTime();
+
+            if(!obj.email) {
+                obj.email = Auth.$getAuth().email;
+                obj.refresh = 1;
+
+            } else {
+                obj.refresh++;
+            }
+
+            obj.$save();
+        });
+    };
 
     $scope.auth = Auth;
     $scope.auth.$onAuthStateChanged(function (authData) {
         $scope.userObj = authData;
-        // if (authData && authData.uid)
-        //     console.log("onAuthStateChanged: " + authData.uid);
+        // console.log($scope.userObj);
+        saveDataUser();
     });
 
     $scope.logout = function () {
@@ -151,8 +176,10 @@ app.controller('appCtrl', ["$scope", "$location", "Auth", function ($scope, $loc
 
 }]);
 
-app.controller('indexCtrl', function ($scope) {
-
+app.controller('indexCtrl', function ($scope, $interval) {
+    $interval(function () {
+        $scope.time = new Date();
+    }, 1000);
 });
 
 app.controller('learnCtrl', ["$scope",
@@ -164,15 +191,19 @@ app.controller('learnCtrl', ["$scope",
     }
 ]);
 
-app.controller('managerCtrl', ["$scope", "getListOfWords",
-    function ($scope, getListOfWords) {
+app.controller('managerCtrl', ["$scope", "getListOfWords", "selectedWord",
+    function ($scope, getListOfWords, selectedWord) {
 
         $scope.words = getListOfWords;
 
         $scope.deleteWord = function (index) {
             var item = $scope.words[index];
             $scope.words.$remove(item);
-        }
+        };
+
+        $scope.editWord = function (item) {
+            selectedWord = item;
+        };
     }
 ]);
 
@@ -184,12 +215,12 @@ app.controller("createUserCtrl", ["$scope", "Auth", function ($scope, Auth) {
             $scope.email,
             $scope.password
         ).then(function (userData) {
-                console.log("User " + userData.uid + " created successfully!");
-            }).then(function (authData) {
-                console.log("Logged in as:", authData.uid);
-            }).catch(function (error) {
-                console.error("Error: ", error);
-            });
+            console.log("User " + userData.uid + " created successfully!");
+        }).then(function (authData) {
+            console.log("Logged in as:", authData.uid);
+        }).catch(function (error) {
+            console.error("Error: ", error);
+        });
     };
 
 }
@@ -247,7 +278,7 @@ app.controller('addWordCtrl', ["$scope", "getListOfWords", "$alert",
             type: 'success',
             container: '#alertContainer',
             show: false,
-            delay: { hide: 1000 }
+            delay: {hide: 1000}
         });
 
         $scope.saveWord = function () {
@@ -277,3 +308,38 @@ app.controller('addWordCtrl', ["$scope", "getListOfWords", "$alert",
         };
     }
 ]);
+
+app.controller('editWordCtrl', ["$scope", "$routeParams", "getListOfWords", "$alert",
+    function ($scope, $routeParams, getListOfWords, $alert) {
+
+        var alert = $alert({
+            title: 'Success!',
+            content: 'Word updated succesfully.',
+            type: 'success',
+            container: '#alertContainer',
+            show: false,
+            delay: {hide: 1000}
+        });
+
+        var id = $routeParams.id;
+        var list = getListOfWords;
+        var word = list[id];
+
+        $scope.first = word.first;
+        $scope.second = word.second;
+
+        $scope.saveWord = function () {
+
+            word.first = $scope.first;
+            word.second = $scope.second;
+            list[id] = word;
+
+            list.$save(word).then(function (ref) {
+                alert.show();
+            }).catch(function (error) {
+                console.error("updated failed:", list);
+            });
+        }
+
+    }]
+);
