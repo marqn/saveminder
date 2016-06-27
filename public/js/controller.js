@@ -152,6 +152,10 @@ app.config(function ($routeProvider) {
             controller: 'addWordCtrl',
             templateUrl: 'pages/add_word.html'
         })
+        .when('/add_category', {
+            controller: 'addCategoryCtrl',
+            templateUrl: 'pages/add_category.html'
+        })
         .when('/edit_word/:id', {
             controller: 'editWordCtrl',
             templateUrl: 'pages/add_word.html'
@@ -176,6 +180,7 @@ app.controller('appCtrl', ["$scope", "$location", "Auth", "refFirebase", "$fireb
                 if (!obj.email) {
                     obj.email = Auth.$getAuth().email;
                     obj.refresh = 1;
+                    obj.score = 0;
 
                 } else {
                     obj.refresh++;
@@ -188,7 +193,6 @@ app.controller('appCtrl', ["$scope", "$location", "Auth", "refFirebase", "$fireb
         $scope.auth = Auth;
         $scope.auth.$onAuthStateChanged(function (authData) {
             $scope.userObj = authData;
-            // console.log($scope.userObj);
             saveDataUser();
         });
 
@@ -208,8 +212,8 @@ app.controller('indexCtrl', function ($scope, $interval) {
     }, 1000);
 });
 
-app.controller('learnCtrl', ["$scope", "hotkeys",
-    function ($scope, hotkeys) {
+app.controller('learnCtrl', ["$scope",
+    function ($scope) {
 
         $scope.mode;
 
@@ -334,6 +338,35 @@ app.controller('addWordCtrl', ["$scope", "getListOfWords", "$alert",
         };
     }
 ]);
+app.controller('addCategoryCtrl', ["$scope", "$firebaseArray", "$alert", "Auth", "refFirebase",
+    function ($scope, $firebaseArray, $alert, Auth, refFirebase) {
+
+        var alert = $alert({
+            title: 'Success!',
+            content: 'Category added succesfully.',
+            type: 'success',
+            container: '#alertContainer',
+            show: false,
+            delay: {hide: 1000}
+        });
+
+        $scope.saveCategory = function () {
+
+            var idUser = Auth.$getAuth().uid;
+            var ref = refFirebase.ref("users").child(idUser).child('categories');
+            var list = $firebaseArray(ref);
+
+            var categoryObj = {
+                categoryName: $scope.category
+            };
+
+            list.$add(categoryObj).then(function (ref) {
+                $scope.category = '';
+                alert.show();
+            });
+        }
+    }]
+);
 
 app.controller('editWordCtrl', ["$scope", "$routeParams", "getListOfWords", "$alert",
     function ($scope, $routeParams, getListOfWords, $alert) {

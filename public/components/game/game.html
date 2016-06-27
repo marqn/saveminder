@@ -21,16 +21,18 @@
 
     <div ng-if="sprawdz == 2">
         <button type="button" class="btn btn-success" ng-click="wiem()">
-            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Wiem
+            <i class="fa fa-caret-square-o-left fa-lg" aria-hidden="true"></i>
+             Wiem
         </button>
         <button type="button" class="btn btn-danger" ng-click="niewiem()">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Nie wiem
+            Nie wiem <i class="fa fa-caret-square-o-right fa-lg" aria-hidden="true"></i>
         </button>
     </div>
 
 
     <div ng-if="sprawdz == 1">
         <button type="button" class="btn btn-info" ng-click="next()">
+            <i class="fa fa-caret-square-o-up fa-lg" aria-hidden="true"></i>
             Check
         </button>
     </div>
