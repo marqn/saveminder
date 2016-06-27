@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute', 'firebase', 'mgcrea.ngStrap']);
+var app = angular.module('app', ['ngRoute', 'firebase', 'mgcrea.ngStrap', 'cfp.hotkeys']);
 
 
 app.factory("Auth", ["$firebaseAuth",
@@ -25,7 +25,7 @@ app.factory('getListOfWords', ["Auth", "refFirebase", "$firebaseArray",
 ]);
 
 app.component('gameWindow', {
-    controller: function ($scope, getListOfWords) {
+    controller: function ($scope, getListOfWords, hotkeys) {
         var shuffleArray = function (array) {
             var m = array.length, t, i;
 
@@ -92,7 +92,33 @@ app.component('gameWindow', {
             } else {
                 $scope.sprawdz = 4;
             }
-        }
+        };
+
+        hotkeys.bindTo($scope)
+            .add({
+                combo: 'left',
+                description: 'blah blah',
+                callback: function () {
+                    $scope.wiem();
+                }
+            })
+            .add({
+                combo: 'right',
+                description: 'blah blah',
+                callback: function () {
+                    $scope.niewiem();
+                }
+            })
+            .add({
+                combo: 'up',
+                description: 'blah blah',
+                callback: function () {
+                    if ($scope.sprawdz != 4)
+                        $scope.next();
+                    else
+                        $scope.startGame();
+                }
+            });
 
         initGame();
     },
@@ -138,43 +164,43 @@ app.config(function ($routeProvider) {
 app.controller('appCtrl', ["$scope", "$location", "Auth", "refFirebase", "$firebaseObject",
     function ($scope, $location, Auth, refFirebase, $firebaseObject) {
 
-    saveDataUser = function () {
-        var idUser = Auth.$getAuth().uid;
-        var ref = refFirebase.ref("users").child(idUser).child('userData');
-        var obj = $firebaseObject(ref);
+        saveDataUser = function () {
+            var idUser = Auth.$getAuth().uid;
+            var ref = refFirebase.ref("users").child(idUser).child('userData');
+            var obj = $firebaseObject(ref);
 
-        obj.$loaded().then(function () {
-            console.log(obj.email);
-            obj.lastLogin = new Date().getTime();
+            obj.$loaded().then(function () {
+                console.log(obj.email);
+                obj.lastLogin = new Date().getTime();
 
-            if(!obj.email) {
-                obj.email = Auth.$getAuth().email;
-                obj.refresh = 1;
+                if (!obj.email) {
+                    obj.email = Auth.$getAuth().email;
+                    obj.refresh = 1;
 
-            } else {
-                obj.refresh++;
-            }
+                } else {
+                    obj.refresh++;
+                }
 
-            obj.$save();
+                obj.$save();
+            });
+        };
+
+        $scope.auth = Auth;
+        $scope.auth.$onAuthStateChanged(function (authData) {
+            $scope.userObj = authData;
+            // console.log($scope.userObj);
+            saveDataUser();
         });
-    };
 
-    $scope.auth = Auth;
-    $scope.auth.$onAuthStateChanged(function (authData) {
-        $scope.userObj = authData;
-        // console.log($scope.userObj);
-        saveDataUser();
-    });
+        $scope.logout = function () {
+            $scope.auth.$signOut();
+        };
 
-    $scope.logout = function () {
-        $scope.auth.$signOut();
-    };
+        $scope.pageClass = function (path) {
+            return (path == $location.path()) ? 'active' : '';
+        };
 
-    $scope.pageClass = function (path) {
-        return (path == $location.path()) ? 'active' : '';
-    };
-
-}]);
+    }]);
 
 app.controller('indexCtrl', function ($scope, $interval) {
     $interval(function () {
@@ -182,8 +208,8 @@ app.controller('indexCtrl', function ($scope, $interval) {
     }, 1000);
 });
 
-app.controller('learnCtrl', ["$scope",
-    function ($scope) {
+app.controller('learnCtrl', ["$scope", "hotkeys",
+    function ($scope, hotkeys) {
 
         $scope.mode;
 
