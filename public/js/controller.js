@@ -1,31 +1,6 @@
-var app = angular.module('app', ['ngRoute', 'firebase', 'mgcrea.ngStrap', 'cfp.hotkeys']);
-
-
-app.factory("Auth", ["$firebaseAuth",
-    function ($firebaseAuth) {
-        return $firebaseAuth();
-    }
-]);
-
-app.factory("refFirebase", function () {
-        return firebase.database();
-    }
-);
-
-app.value("selectedWord", null);
-
-app.factory('getListOfWords', ["Auth", "refFirebase", "$firebaseArray",
-    function (Auth, refFirebase, $firebaseArray) {
-        var idUser = Auth.$getAuth().uid;
-        var ref = refFirebase.ref("users").child(idUser).child('words');
-
-        var list = $firebaseArray(ref);
-        return list;
-    }
-]);
 
 app.component('gameWindow', {
-    controller: function ($scope, getListOfWords, hotkeys) {
+    controller: function ($scope, dataAccess, hotkeys) {
         var shuffleArray = function (array) {
             var m = array.length, t, i;
 
@@ -49,7 +24,7 @@ app.component('gameWindow', {
             $scope.wiemCounter = 0;
             $scope.niewiemCounter = 0;
 
-            $scope.words = getListOfWords;
+            $scope.words = dataAccess.connectArray('words');
             $scope.words = shuffleArray($scope.words);
         };
 
@@ -97,21 +72,18 @@ app.component('gameWindow', {
         hotkeys.bindTo($scope)
             .add({
                 combo: 'left',
-                description: 'blah blah',
                 callback: function () {
                     $scope.wiem();
                 }
             })
             .add({
                 combo: 'right',
-                description: 'blah blah',
                 callback: function () {
                     $scope.niewiem();
                 }
             })
             .add({
                 combo: 'up',
-                description: 'blah blah',
                 callback: function () {
                     if ($scope.sprawdz != 4)
                         $scope.next();
@@ -165,13 +137,11 @@ app.config(function ($routeProvider) {
         });
 });
 
-app.controller('appCtrl', ["$scope", "$location", "Auth", "refFirebase", "$firebaseObject",
-    function ($scope, $location, Auth, refFirebase, $firebaseObject) {
+app.controller('appCtrl', ["$scope", "$location", "Auth", "dataAccess",
+    function ($scope, $location, Auth, dataAccess) {
 
         saveDataUser = function () {
-            var idUser = Auth.$getAuth().uid;
-            var ref = refFirebase.ref("users").child(idUser).child('userData');
-            var obj = $firebaseObject(ref);
+            var obj = dataAccess.connectObj('userData');
 
             obj.$loaded().then(function () {
                 console.log(obj.email);
@@ -221,10 +191,10 @@ app.controller('learnCtrl', ["$scope",
     }
 ]);
 
-app.controller('managerCtrl', ["$scope", "getListOfWords", "selectedWord",
-    function ($scope, getListOfWords, selectedWord) {
+app.controller('managerCtrl', ["$scope", "dataAccess", "selectedWord",
+    function ($scope, dataAccess, selectedWord) {
 
-        $scope.words = getListOfWords;
+        $scope.words = dataAccess.connectArray('words');
 
         $scope.deleteWord = function (index) {
             var item = $scope.words[index];
@@ -258,8 +228,6 @@ app.controller("createUserCtrl", ["$scope", "Auth", function ($scope, Auth) {
 
 app.controller('signInCtrl', ["$scope", "Auth", function ($scope, Auth) {
     $scope.info = "Login";
-
-    $scope.auth = Auth;
 
     $scope.isLogged = function () {
         var authData = Auth.$getAuth();
@@ -299,8 +267,8 @@ app.controller('signInCtrl', ["$scope", "Auth", function ($scope, Auth) {
     };
 }]);
 
-app.controller('addWordCtrl', ["$scope", "getListOfWords", "$alert",
-    function ($scope, getListOfWords, $alert) {
+app.controller('addWordCtrl', ["$scope", "dataAccess", "$alert",
+    function ($scope, dataAccess, $alert) {
 
         var alert = $alert({
             title: 'Success!',
@@ -313,7 +281,7 @@ app.controller('addWordCtrl', ["$scope", "getListOfWords", "$alert",
 
         $scope.saveWord = function () {
 
-            var list = getListOfWords;
+            var list = dataAccess.connectArray('words');
 
             var wordObj =
             {
@@ -338,8 +306,8 @@ app.controller('addWordCtrl', ["$scope", "getListOfWords", "$alert",
         };
     }
 ]);
-app.controller('addCategoryCtrl', ["$scope", "$firebaseArray", "$alert", "Auth", "refFirebase",
-    function ($scope, $firebaseArray, $alert, Auth, refFirebase) {
+app.controller('addCategoryCtrl', ["$scope", "$alert", "dataAccess",
+    function ($scope, $alert, dataAccess) {
 
         var alert = $alert({
             title: 'Success!',
@@ -352,9 +320,7 @@ app.controller('addCategoryCtrl', ["$scope", "$firebaseArray", "$alert", "Auth",
 
         $scope.saveCategory = function () {
 
-            var idUser = Auth.$getAuth().uid;
-            var ref = refFirebase.ref("users").child(idUser).child('categories');
-            var list = $firebaseArray(ref);
+            var list = dataAccess.connectArray('categories');
 
             var categoryObj = {
                 categoryName: $scope.category
@@ -368,8 +334,8 @@ app.controller('addCategoryCtrl', ["$scope", "$firebaseArray", "$alert", "Auth",
     }]
 );
 
-app.controller('editWordCtrl', ["$scope", "$routeParams", "getListOfWords", "$alert",
-    function ($scope, $routeParams, getListOfWords, $alert) {
+app.controller('editWordCtrl', ["$scope", "$routeParams", "dataAccess", "$alert",
+    function ($scope, $routeParams, dataAccess, $alert) {
 
         var alert = $alert({
             title: 'Success!',
@@ -381,7 +347,7 @@ app.controller('editWordCtrl', ["$scope", "$routeParams", "getListOfWords", "$al
         });
 
         var id = $routeParams.id;
-        var list = getListOfWords;
+        var list = dataAccess.connectArray('words');
         var word = list[id];
 
         $scope.first = word.first;
