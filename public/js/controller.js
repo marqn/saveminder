@@ -180,6 +180,11 @@ app.controller('indexCtrl', function ($scope, $interval) {
     $interval(function () {
         $scope.time = new Date();
     }, 1000);
+
+    // sprawdz ilość słówek
+    //      jeśli zero dodaj info o dodaniu jakichś i utwórz kategorię main
+
+
 });
 
 app.controller('learnCtrl', ["$scope",
@@ -195,6 +200,9 @@ app.controller('managerCtrl', ["$scope", "dataAccess", "selectedWord",
     function ($scope, dataAccess, selectedWord) {
 
         $scope.words = dataAccess.connectArray('words');
+
+        // jesli nie ma slowek wyswietl liste kategorii
+        //
 
         $scope.deleteWord = function (index) {
             var item = $scope.words[index];
