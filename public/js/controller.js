@@ -1,4 +1,3 @@
-
 app.component('gameWindow', {
     controller: function ($scope, dataAccess, hotkeys) {
         var shuffleArray = function (array) {
@@ -202,7 +201,6 @@ app.controller('managerCtrl', ["$scope", "dataAccess", "selectedWord",
         $scope.words = dataAccess.connectArray('words');
 
         // jesli nie ma slowek wyswietl liste kategorii
-        //
 
         $scope.deleteWord = function (index) {
             var item = $scope.words[index];
@@ -338,7 +336,7 @@ app.controller('addCategoryCtrl', ["$scope", "$alert", "dataAccess",
                 $scope.category = '';
                 alert.show();
             });
-        }
+        };
     }]
 );
 
@@ -354,15 +352,20 @@ app.controller('editWordCtrl', ["$scope", "$routeParams", "dataAccess", "$alert"
             delay: {hide: 1000}
         });
 
+        var word = {};
         var id = $routeParams.id;
         var list = dataAccess.connectArray('words');
-        var word = list[id];
 
-        $scope.first = word.first;
-        $scope.second = word.second;
+        list.$loaded()
+            .then(function (x) {
+                word = list[id];
 
-        $scope.saveWord = function () {
+                $scope.first = word.first;
+                $scope.second = word.second;
+            });
 
+        $scope.saveWord = function ()
+        {
             word.first = $scope.first;
             word.second = $scope.second;
             list[id] = word;

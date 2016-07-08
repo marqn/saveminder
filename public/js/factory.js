@@ -26,12 +26,34 @@ app.factory("dataAccess", ["Auth", "refFirebase", "$firebaseArray", "$firebaseOb
 
                 var obj = $firebaseObject(ref);
                 return obj;
-            },
-            connectAuth: function () {
-                return Auth.$getAuth();
             }
         }
     }
 ]);
+
+/*
+app.factory('gamePage', function () {
+    var index = 1;
+    return {
+        nextPage: function () {
+            index++;
+            if (index > 4) {
+                index = 1;
+            }
+            console.log(index);
+            return index;
+        },
+        endPage: function () {
+            index = 4;
+            console.log(index);
+            return index;
+        },
+        getPage: function () {
+            console.log(index);
+            return index;
+        }
+    };
+});
+*/
 
 app.value("selectedWord", null);
