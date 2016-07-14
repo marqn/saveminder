@@ -1,3 +1,16 @@
  --- GAME.html ---
  1. dodać w grze numer słówka (postęp nauki)
  2. czas w jakim się uczymy (całkowity i zastanawiania się)
+ 3. dodać opcje gry (wybór wyrazów na podstawie
+                    - ilości
+                    - kategorii
+                    - daty dodania (ostatnie 20)
+                    - raitingu (nauczone/zapomniane)
+                    - losowe
+                    - wszystkie
+                    - najdłużej zastanawiane się
+ 4. dodać przypisanie wyrazu do kategorii (wielu)
+ 5.
+
+
+
