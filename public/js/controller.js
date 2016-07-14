@@ -1,6 +1,6 @@
 app.component('gameWindow', {
     controller: function ($scope, dataAccess, hotkeys) {
-        var shuffleArray = function (array) {
+        shuffleArray = function (array) {
             var m = array.length, t, i;
 
             // While there remain elements to shuffle
@@ -22,9 +22,15 @@ app.component('gameWindow', {
             $scope.wordIndex = 0;
             $scope.wiemCounter = 0;
             $scope.niewiemCounter = 0;
+            $scope.progress = 0;
 
-            $scope.words = dataAccess.connectArray('words');
-            $scope.words = shuffleArray($scope.words);
+            var list = dataAccess.connectArray('words');
+            // $scope.words = dataAccess.connectArray('words');
+
+            list.$loaded()
+                .then(function () {
+                    $scope.words = shuffleArray(list);
+                });
         };
 
         $scope.wiem = function () {
@@ -63,6 +69,7 @@ app.component('gameWindow', {
             $scope.sprawdz = 1;
             if ($scope.words.length - 1 > $scope.wordIndex) {
                 $scope.wordIndex++;
+                $scope.progress =  Math.floor(($scope.wordIndex / $scope.words.length) * 100);
             } else {
                 $scope.sprawdz = 4;
             }

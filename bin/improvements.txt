@@ -1,0 +1,3 @@
+ --- GAME.html ---
+ 1. dodać w grze numer słówka (postęp nauki)
+ 2. czas w jakim się uczymy (całkowity i zastanawiania się)
