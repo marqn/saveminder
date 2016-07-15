@@ -1,5 +1,7 @@
 var app = angular.module('app', ['ngRoute', 'firebase', 'mgcrea.ngStrap', 'cfp.hotkeys']);
 
+const DEFAULT_WORDS_NUMBER_LIMIT = 5;
+
 app.factory("Auth", ["$firebaseAuth",
     function ($firebaseAuth) {
         return $firebaseAuth();
@@ -31,29 +33,76 @@ app.factory("dataAccess", ["Auth", "refFirebase", "$firebaseArray", "$firebaseOb
     }
 ]);
 
-/*
-app.factory('gamePage', function () {
-    var index = 1;
+app.factory("ArrayUtil", function () {
     return {
-        nextPage: function () {
-            index++;
-            if (index > 4) {
-                index = 1;
+        shuffleArray: function (array) {
+            var m = array.length, t, i;
+
+            // While there remain elements to shuffle
+            while (m) {
+                // Pick a remaining element…
+                i = Math.floor(Math.random() * m--);
+
+                // And swap it with the current element.
+                t = array[m];
+                array[m] = array[i];
+                array[i] = t;
             }
-            console.log(index);
-            return index;
-        },
-        endPage: function () {
-            index = 4;
-            console.log(index);
-            return index;
-        },
-        getPage: function () {
-            console.log(index);
-            return index;
+            return array;
         }
-    };
+    }
 });
-*/
+
+app.factory("gameConfiguration", function () {
+    var modeGame, category, wordsLimit;
+
+    return {
+        getModeGame: function () {
+            return modeGame;
+        },
+        setModeGame: function (val) {
+            modeGame = val;
+        },
+        getCategory: function () {
+            return category;
+        },
+        setCategory: function (val) {
+            category = val;
+        },
+        getWordsLimit: function () {
+            if (!wordsLimit)
+                wordsLimit = DEFAULT_WORDS_NUMBER_LIMIT;
+            return wordsLimit;
+        },
+        setWordsLimit: function (val) {
+            wordsLimit = val;
+        }
+    }
+});
+
+/*
+ app.factory('gamePage', function () {
+ var index = 1;
+ return {
+ nextPage: function () {
+ index++;
+ if (index > 4) {
+ index = 1;
+ }
+ console.log(index);
+ return index;
+ },
+ endPage: function () {
+ index = 4;
+ console.log(index);
+ return index;
+ },
+ getPage: function () {
+ console.log(index);
+ return index;
+ }
+ };
+ });
+ */
 
 app.value("selectedWord", null);

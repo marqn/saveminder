@@ -1,21 +1,5 @@
 app.component('gameWindow', {
-    controller: function ($scope, dataAccess, hotkeys) {
-        shuffleArray = function (array) {
-            var m = array.length, t, i;
-
-            // While there remain elements to shuffle
-            while (m) {
-                // Pick a remaining element…
-                i = Math.floor(Math.random() * m--);
-
-                // And swap it with the current element.
-                t = array[m];
-                array[m] = array[i];
-                array[i] = t;
-            }
-
-            return array;
-        };
+    controller: function ($scope, dataAccess, hotkeys, ArrayUtil, gameConfiguration) {
 
         initGame = function () {
             $scope.sprawdz = 1; // 1,2,3,4
@@ -25,11 +9,10 @@ app.component('gameWindow', {
             $scope.progress = 0;
 
             var list = dataAccess.connectArray('words');
-            // $scope.words = dataAccess.connectArray('words');
 
             list.$loaded()
                 .then(function () {
-                    $scope.words = shuffleArray(list);
+                    $scope.words = ArrayUtil.shuffleArray(list);
                 });
         };
 
@@ -67,9 +50,9 @@ app.component('gameWindow', {
 
         nextWord = function () {
             $scope.sprawdz = 1;
-            if ($scope.words.length - 1 > $scope.wordIndex) {
+            if (gameConfiguration.getWordsLimit() - 1 > $scope.wordIndex) {
                 $scope.wordIndex++;
-                $scope.progress =  Math.floor(($scope.wordIndex / $scope.words.length) * 100);
+                $scope.progress = Math.floor(($scope.wordIndex / $scope.words.length) * 100);
             } else {
                 $scope.sprawdz = 4;
             }
@@ -193,11 +176,23 @@ app.controller('indexCtrl', function ($scope, $interval) {
 
 });
 
-app.controller('learnCtrl', ["$scope",
-    function ($scope) {
+app.controller('learnCtrl', ["$scope", "dataAccess", "gameConfiguration",
+    function ($scope, dataAccess, gameConfiguration) {
+        $scope.page = 'select games mode';
 
+        gameConfiguration.setWordsLimit($scope.numberOfWords);
         $scope.mode;
 
+        var list = dataAccess.connectArray('words');
+
+        list.$loaded()
+            .then(function () {
+                $scope.allWordsNumber = list.length;
+            });
+
+        $scope.startGame = function () {
+            $scope.page = 'running game';
+        };
 
     }
 ]);
@@ -371,8 +366,7 @@ app.controller('editWordCtrl', ["$scope", "$routeParams", "dataAccess", "$alert"
                 $scope.second = word.second;
             });
 
-        $scope.saveWord = function ()
-        {
+        $scope.saveWord = function () {
             word.first = $scope.first;
             word.second = $scope.second;
             list[id] = word;

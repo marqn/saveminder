@@ -1,52 +1,63 @@
-<div class="progress">
-    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%;">
+<div>
+    <div>
+        <span>
+            <h5>win: <span class="badge">{{wiemCounter}}</span>
+            lost: <span class="badge">{{niewiemCounter}}</span></h5>
+        </span>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                 style="width: {{progress}}%;">
+            </div>
+            {{progress}}%
+        </div>
     </div>
-    {{progress}}%
-</div>
 
-<div class="btn-group">
-    <div ng-if="sprawdz != 4">
-        <h2>
+    <div class="btn-group">
+        <div ng-if="sprawdz != 4">
+            <h2>
             <span class="label label-primary">
                 {{words[wordIndex].first | lowercase}}
             </span>
-        </h2>
+            </h2>
 
-        <h2 ng-hide="sprawdz == 2">
-            ...?...
-        </h2>
+            <h2 ng-hide="sprawdz == 2">
+                ...?...
+            </h2>
 
-        <h2 ng-show="sprawdz == 2">
+            <h2 ng-show="sprawdz == 2">
             <span class="label label-success">
                 {{words[wordIndex].second | lowercase}}
             </span>
-        </h2>
-    </div>
+            </h2>
+        </div>
 
-    <div ng-if="sprawdz == 2">
-        <button type="button" class="btn btn-success" ng-click="wiem()">
-            <i class="fa fa-caret-square-o-left fa-lg" aria-hidden="true"></i>
-             Wiem
-        </button>
-        <button type="button" class="btn btn-danger" ng-click="niewiem()">
-            Nie wiem <i class="fa fa-caret-square-o-right fa-lg" aria-hidden="true"></i>
-        </button>
-    </div>
+        <div ng-if="sprawdz == 2">
+            <button type="button" class="btn btn-success" ng-click="wiem()">
+                <i class="fa fa-caret-square-o-left fa-lg" aria-hidden="true"></i>
+                Wiem
+            </button>
+            <button type="button" class="btn btn-danger" ng-click="niewiem()">
+                Nie wiem <i class="fa fa-caret-square-o-right fa-lg" aria-hidden="true"></i>
+            </button>
+        </div>
 
 
-    <div ng-if="sprawdz == 1">
-        <button type="button" class="btn btn-info" ng-click="next()">
-            <i class="fa fa-caret-square-o-up fa-lg" aria-hidden="true"></i>
-            Check
-        </button>
-    </div>
+        <div ng-if="sprawdz == 1">
+            <button type="button" class="btn btn-info" ng-click="next()">
+                <i class="fa fa-caret-square-o-up fa-lg" aria-hidden="true"></i>
+                Check
+            </button>
+        </div>
 
-    <div ng-if="sprawdz == 4">
-        <h1>Koniec</h1>
-        <h3>Statystyka:</h3>
-        <p>Ilość słówek:{{wiemCounter + niewiemCounter}}</p>
-        <p>Wyuczone:{{wiemCounter}}</p>
-        <p>Zapomniane:{{niewiemCounter}}</p>
-        <p><button class="btn btn-primary" ng-click="startGame()">Rozpocznij jeszcze raz</button></p>
+        <div ng-if="sprawdz == 4">
+            <h1>Koniec</h1>
+            <h3>Statystyka:</h3>
+            <p>Ilość słówek:{{wiemCounter + niewiemCounter}}</p>
+            <p>Wyuczone:{{wiemCounter}}</p>
+            <p>Zapomniane:{{niewiemCounter}}</p>
+            <p>
+                <button class="btn btn-primary" ng-click="startGame()">Rozpocznij jeszcze raz</button>
+            </p>
+        </div>
     </div>
 </div>

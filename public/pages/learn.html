@@ -2,27 +2,53 @@
     <div class="page-header">
         <h1>Learn!</h1>
     </div>
-    <!--<h3>Select mode:{{mode}}</h3>
-    <div class="row text-center">
-        <div class="col-md-4">
-            <button class="btn btn-info btn-lg" ng-click="mode = '20'">
-                Last 20
-            </button>
-        </div>
-        <div class="col-md-4">
-            <button class="btn btn-info btn-lg" ng-click="mode = 'all'">
-                All
-            </button>
+
+    <div class="container text-center" ng-if="page == 'select games mode'">
+
+        <span>
+            <h3>Select category:</h3>
+            <input type="text">
+        </span>
+
+        <span>
+            <h3>Number of words:{{numberOfWords}}</h3>
+            <input type="range" value="20" min="5" max="allWordsNumber"  ng-model="numberOfWords">
+        </span>
+
+
+        <h3>Select mode:{{mode}}</h3>
+        <div class="row text-center">
+
+                <button class="btn btn-info btn-lg" ng-click="mode = 'last'">
+                    Last
+                </button>
+
+                <button class="btn btn-info btn-lg" ng-click="mode = 'all'">
+                    All
+                </button>
+
+
+                <button class="btn btn-info btn-lg" ng-click="mode = 'random'">
+                    Random queue
+                </button>
+
+                <button class="btn btn-info btn-lg" ng-click="mode = 'raiting'">
+                    Bad raiting
+                </button>
+
+                <button class="btn btn-info btn-lg" ng-click="mode = 'wonder'">
+                    much longer wonder
+                </button>
 
         </div>
-        <div class="col-md-4">
-            <button class="btn btn-info btn-lg" ng-click="mode = 'random'">
-                Random queue
+        <div>
+            <button class="btn btn-success btn-lg" ng-click="startGame()">
+                Start
             </button>
         </div>
-    </div>-->
+    </div>
 
-    <div>
+    <div ng-if="page == 'running game'">
         <div class="container text-center">
             <game-window id="gameBtn"></game-window>
         </div>
