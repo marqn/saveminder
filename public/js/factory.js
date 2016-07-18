@@ -80,6 +80,30 @@ app.factory("gameConfiguration", function () {
     }
 });
 
+app.factory("managerModel", function () {
+    var state; // wordState, categoryState
+
+    return {
+        setState: function (val) {
+            state = val;
+        },
+        getState: function () {
+            if(!state)
+                state = "wordState";
+            return state;
+        },
+        setWordState: function() {
+            state = 'wordState';
+            return state;
+        },
+        setCategoryState: function() {
+            state = 'categoryState';
+            return state;
+        }
+
+    };
+});
+
 /*
  app.factory('gamePage', function () {
  var index = 1;

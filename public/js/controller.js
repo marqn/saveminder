@@ -120,6 +120,10 @@ app.config(function ($routeProvider) {
             controller: 'editWordCtrl',
             templateUrl: 'pages/add_word.html'
         })
+        .when('/edit_category/:id', {
+            controller: 'editCategoryCtrl',
+            templateUrl: 'pages/add_category.html'
+        })
         .otherwise({
             template: '<h1>Not Found</h1>'
         });
@@ -197,10 +201,13 @@ app.controller('learnCtrl', ["$scope", "dataAccess", "gameConfiguration",
     }
 ]);
 
-app.controller('managerCtrl', ["$scope", "dataAccess", "selectedWord",
-    function ($scope, dataAccess, selectedWord) {
+app.controller('managerCtrl', ["$scope", "dataAccess", "selectedWord", "managerModel",
+    function ($scope, dataAccess, selectedWord, managerModel) {
+
+        $scope.managerModel = managerModel;
 
         $scope.words = dataAccess.connectArray('words');
+        $scope.categories = dataAccess.connectArray('categories');
 
         // jesli nie ma slowek wyswietl liste kategorii
 
@@ -343,6 +350,44 @@ app.controller('addCategoryCtrl', ["$scope", "$alert", "dataAccess",
 );
 
 app.controller('editWordCtrl', ["$scope", "$routeParams", "dataAccess", "$alert",
+        function ($scope, $routeParams, dataAccess, $alert) {
+
+            var alert = $alert({
+                title: 'Success!',
+                content: 'Word updated succesfully.',
+                type: 'success',
+                container: '#alertContainer',
+                show: false,
+                delay: {hide: 1000}
+            });
+
+            var word = {};
+            var id = $routeParams.id;
+            var list = dataAccess.connectArray('words');
+
+            list.$loaded()
+                .then(function (x) {
+                    word = list[id];
+
+                    $scope.first = word.first;
+                    $scope.second = word.second;
+                });
+
+            $scope.saveWord = function () {
+                word.first = $scope.first;
+                word.second = $scope.second;
+                list[id] = word;
+
+                list.$save(word).then(function (ref) {
+                    alert.show();
+                }).catch(function (error) {
+                    console.error("updated failed:", list);
+                });
+            }
+
+        }]
+);
+app.controller('editCategoryCtrl', ["$scope", "$routeParams", "dataAccess", "$alert",
     function ($scope, $routeParams, dataAccess, $alert) {
 
         var alert = $alert({
@@ -366,8 +411,8 @@ app.controller('editWordCtrl', ["$scope", "$routeParams", "dataAccess", "$alert"
                 $scope.second = word.second;
             });
 
-        $scope.saveWord = function () {
-            word.first = $scope.first;
+        $scope.saveCategory = function () {
+            word.category = $scope.category;
             word.second = $scope.second;
             list[id] = word;
 

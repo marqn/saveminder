@@ -1,38 +1,73 @@
 <div>
-    <div class="page-header">
-        <h1>List of your words:</h1>
+    <div class="form-horizontal">
+        <button class="btn btn-info" ng-click="managerModel.setWordState()">List of words</button>
+        <button class="btn btn-info" ng-click="managerModel.setCategoryState()">List of categories</button>
     </div>
-    <div>
-        <a href="#/add_word" class="btn btn-success">Add new word</a>
-        <a href="#/add_category" class="btn btn-success">Add new category</a>
-    </div>
-    <div class="panel panel-default">
-        <table class="table table-responsive">
-            <thead>
-            <tr>
-                <th class="text-center">#</th>
-                <th>First:</th>
-                <th>Second:</th>
-                <th>Date added:</th>
-                <th>Refresh:</th>
-                <th>Operations:</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="word in words">
-                <td>{{$index+1}}</td>
-                <td>{{word.first}}</td>
-                <td>{{word.second}}</td>
-                <td>{{word.data_added | date:'dd-MM-yyyy'}}</td>
-                <td>{{word.refresh}}</td>
-                <td>
-                    <a class="btn btn-success btn-sm" href="#/edit_word/{{$index}}" role="button">Edit</a>
-                    <a class="btn btn-danger btn-sm" ng-click="deleteWord($index)" role="button">Delete</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
 
+    <div ng-if="managerModel.getState() == 'wordState'">
+        <div class="page-header">
+            <h1>List of your words:</h1>
+        </div>
+        <div>
+            <a href="#/add_word" class="btn btn-success">Add new word</a>
+        </div>
+        <div class="panel panel-default">
+            <table class="table table-responsive">
+                <thead>
+                <tr>
+                    <th class="text-center">#</th>
+                    <th>First:</th>
+                    <th>Second:</th>
+                    <th>Date added:</th>
+                    <th>Refresh:</th>
+                    <th>Operations:</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="word in words">
+                    <td>{{$index+1}}</td>
+                    <td>{{word.first}}</td>
+                    <td>{{word.second}}</td>
+                    <td>{{word.data_added | date:'dd-MM-yyyy'}}</td>
+                    <td>{{word.refresh}}</td>
+                    <td>
+                        <a class="btn btn-success btn-sm" href="#/edit_word/{{$index}}" role="button">Edit</a>
+                        <a class="btn btn-danger btn-sm" ng-click="deleteWord($index)" role="button">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div ng-if="managerModel.getState() == 'categoryState'">
+        <div class="page-header">
+            <h1>List of your categories:</h1>
+        </div>
+        <div>
+            <a href="#/add_category" class="btn btn-success">Add new category</a>
+        </div>
+        <div class="panel panel-default">
+            <table class="table table-responsive">
+                <thead>
+                <tr>
+                    <th class="text-center">#</th>
+                    <th>Name:</th>
+                    <th>Operations:</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="category in categories">
+                    <td>{{$index+1}}</td>
+                    <td>{{category.categoryName}}</td>
+                    <td>
+                        <a class="btn btn-success btn-sm" href="#/edit_word/{{$index}}" role="button">Edit</a>
+                        <a class="btn btn-danger btn-sm" ng-click="deleteWord($index)" role="button">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
 
