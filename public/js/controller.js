@@ -50,12 +50,11 @@ app.component('gameWindow', {
 
         nextWord = function () {
             $scope.sprawdz = 1;
-            if (gameConfiguration.getWordsLimit() - 1 > $scope.wordIndex) {
-                $scope.wordIndex++;
-                $scope.progress = Math.floor(($scope.wordIndex / $scope.words.length) * 100);
-            } else {
+            if (gameConfiguration.getWordsLimit() - 1 == $scope.wordIndex) {
                 $scope.sprawdz = 4;
             }
+            $scope.wordIndex++;
+            $scope.progress = Math.floor(($scope.wordIndex / gameConfiguration.getWordsLimit()) * 100);
         };
 
         hotkeys.bindTo($scope)
@@ -180,6 +179,7 @@ app.controller('learnCtrl', ["$scope", "dataAccess", "gameConfiguration",
     function ($scope, dataAccess, gameConfiguration) {
         $scope.page = 'select games mode';
 
+        $scope.numberOfWords = DEFAULT_WORDS_NUMBER_LIMIT;
         gameConfiguration.setWordsLimit($scope.numberOfWords);
         $scope.mode;
 
