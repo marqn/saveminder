@@ -426,6 +426,15 @@ app.controller('editWordCtrl', ["$scope", "$routeParams", "dataAccess", "$alert"
             });
         }
 
+        $scope.setCategory = function (val) {
+            $scope.categorySelected = val;
+        };
+
+        $scope.getCategory = function () {
+            if (!$scope.categorySelected)
+                $scope.categorySelected = CATEGORY_TITLE;
+        };
+
     }]
 );
 app.controller('editCategoryCtrl', ["$scope", "$routeParams", "dataAccess", "$alert",
