@@ -1,10 +1,12 @@
 <div>
     <div class="form-horizontal">
-        <button class="btn btn-info" ng-click="managerModel.setWordState()">List of words</button>
-        <button class="btn btn-info" ng-click="managerModel.setCategoryState()">List of categories</button>
+        <button ng-click="managerModel.setWordState()"
+                ng-class="{'btn btn-success': managerModel.isWordState(), 'btn btn-info': !managerModel.isWordState()}">List of words</button>
+        <button ng-click="managerModel.setCategoryState()"
+                ng-class="{'btn btn-success': managerModel.isCategoryState(), 'btn btn-info': !managerModel.isCategoryState()}">List of categories</button>
     </div>
 
-    <div ng-if="managerModel.getState() == 'wordState'">
+    <div ng-if="managerModel.isWordState()">
         <div class="page-header">
             <h1>List of your words:</h1>
         </div>
@@ -18,6 +20,8 @@
                     <th class="text-center">#</th>
                     <th>First:</th>
                     <th>Second:</th>
+                    <th>Category:</th>
+                    <th>Remember time:</th>
                     <th>Date added:</th>
                     <th>Refresh:</th>
                     <th>Operations:</th>
@@ -28,6 +32,8 @@
                     <td>{{$index+1}}</td>
                     <td>{{word.first}}</td>
                     <td>{{word.second}}</td>
+                    <td>{{word.category}}</td>
+                    <td>{{word.rememberTime}}</td>
                     <td>{{word.data_added | date:'dd-MM-yyyy'}}</td>
                     <td>{{word.refresh}}</td>
                     <td>
@@ -40,7 +46,7 @@
         </div>
     </div>
 
-    <div ng-if="managerModel.getState() == 'categoryState'">
+    <div ng-if="managerModel.isCategoryState()">
         <div class="page-header">
             <h1>List of your categories:</h1>
         </div>
@@ -61,8 +67,8 @@
                     <td>{{$index+1}}</td>
                     <td>{{category.categoryName}}</td>
                     <td>
-                        <a class="btn btn-success btn-sm" href="#/edit_word/{{$index}}" role="button">Edit</a>
-                        <a class="btn btn-danger btn-sm" ng-click="deleteWord($index)" role="button">Delete</a>
+                        <a class="btn btn-success btn-sm" href="#/edit_category/{{$index}}" role="button">Edit</a>
+                        <a class="btn btn-danger btn-sm" ng-click="deleteCategory($index)" role="button">Delete</a>
                     </td>
                 </tr>
                 </tbody>

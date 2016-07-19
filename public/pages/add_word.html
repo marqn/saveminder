@@ -8,11 +8,10 @@
         <div class="btn-group">
             <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
-                Large button <span class="caret"></span>
+                {{categorySelected}} <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a href="#">first category</a></li>
-                <li><a href="#">second category</a></li>
+                <li ng-repeat="category in categories"><a ng-click="setCategory(category.categoryName)">{{category.categoryName}}</a></li>
             </ul>
         </div>
 

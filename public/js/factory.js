@@ -99,6 +99,18 @@ app.factory("managerModel", function () {
         setCategoryState: function() {
             state = 'categoryState';
             return state;
+        },
+        isWordState: function () {
+            if(state == 'wordState')
+                return true;
+            else
+                return false;
+        },
+        isCategoryState: function () {
+            if(state == 'categoryState')
+                return true;
+            else
+                return false;
         }
 
     };
@@ -129,4 +141,4 @@ app.factory("managerModel", function () {
  });
  */
 
-app.value("selectedWord", null);
+app.value("selectedItem", null);
