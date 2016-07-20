@@ -1,9 +1,9 @@
 <div>
     <div class="form-horizontal">
         <button ng-click="managerModel.setWordState()"
-                ng-class="{'btn btn-success': managerModel.isWordState(), 'btn btn-info': !managerModel.isWordState()}">List of words</button>
+                ng-class="{'btn btn-success': managerModel.isWordState(), 'btn btn-default': !managerModel.isWordState()}">List of words</button>
         <button ng-click="managerModel.setCategoryState()"
-                ng-class="{'btn btn-success': managerModel.isCategoryState(), 'btn btn-info': !managerModel.isCategoryState()}">List of categories</button>
+                ng-class="{'btn btn-success': managerModel.isCategoryState(), 'btn btn-default': !managerModel.isCategoryState()}">List of categories</button>
     </div>
 
     <div ng-if="managerModel.isWordState()">

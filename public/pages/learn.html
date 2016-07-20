@@ -16,27 +16,26 @@
         </span>
 
 
-        <h3>Select mode:{{mode}}</h3>
+        <h3>Select mode:{{mode.getModeGame()}}</h3>
         <div class="row text-center">
 
-                <button class="btn btn-info btn-lg" ng-click="mode = 'last'">
+                <button ng-class="selectButton.getClass('last')" ng-click="mode.setModeGame('last')">
                     Last
                 </button>
 
-                <button class="btn btn-info btn-lg" ng-click="mode = 'all'">
+                <button ng-class="selectButton.getClass('all')" ng-click="mode.setModeGame('all')">
                     All
                 </button>
 
-
-                <button class="btn btn-info btn-lg" ng-click="mode = 'random'">
+                <button ng-class="selectButton.getClass('random')" ng-click="mode.setModeGame('random')">
                     Random queue
                 </button>
 
-                <button class="btn btn-info btn-lg" ng-click="mode = 'raiting'">
+                <button ng-class="selectButton.getClass('raiting')" ng-click="mode.setModeGame('raiting')">
                     Bad raiting
                 </button>
 
-                <button class="btn btn-info btn-lg" ng-click="mode = 'wonder'">
+                <button ng-class="selectButton.getClass('wonder')" ng-click="mode.setModeGame('wonder')">
                     much longer wonder
                 </button>
 

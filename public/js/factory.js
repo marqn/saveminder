@@ -116,6 +116,50 @@ app.factory("managerModel", function () {
     };
 });
 
+app.factory("modeGame", function () {
+    var modeGame;
+
+    return {
+        setModeGame: function (val) {
+            modeGame = val;
+            return modeGame;
+        },
+        getModeGame: function () {
+            return modeGame;
+        }
+    }
+});
+
+app.factory("selectButton", function (modeGame) {
+
+    return {
+        getClass: function (val) {
+
+            if(val != modeGame.getModeGame())
+                return "btn btn-info btn-lg";
+            else 
+                return "btn btn-success btn-lg";
+        }
+    }
+
+});
+
+app.factory("alert", ["$alert", function ($alert) {
+    return {
+        setText: function (text) {
+            var alert = $alert({
+                title: 'Success!',
+                content: text,
+                type: 'success',
+                container: '#alertContainer',
+                show: false,
+                delay: {hide: 1000}
+            });
+            return alert;
+        }
+    }
+}]);
+
 /*
  app.factory('gamePage', function () {
  var index = 1;

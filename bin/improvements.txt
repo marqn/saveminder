@@ -12,5 +12,7 @@
  4. dodać przypisanie wyrazu do kategorii (wielu)
  5. ile zgadłeś a ile nie odgadłeś / procentowo lub ilościowo
 
+ 6.zaznaczanie wyboru gry jak w categorii i słówkach
+ 7.poprawić przypisanie słówek do kategorii
 
 

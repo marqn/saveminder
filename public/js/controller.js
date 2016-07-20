@@ -179,13 +179,15 @@ app.controller('indexCtrl', function ($scope, $interval) {
 
 });
 
-app.controller('learnCtrl', ["$scope", "dataAccess", "gameConfiguration",
-    function ($scope, dataAccess, gameConfiguration) {
+app.controller('learnCtrl', ["$scope", "dataAccess", "gameConfiguration", "modeGame", "selectButton",
+    function ($scope, dataAccess, gameConfiguration, modeGame, selectButton) {
         $scope.page = 'select games mode';
 
         $scope.numberOfWords = DEFAULT_WORDS_NUMBER_LIMIT;
         gameConfiguration.setWordsLimit($scope.numberOfWords);
-        $scope.mode;
+        $scope.mode = modeGame;
+        $scope.selectButton = selectButton;
+        
 
         var list = dataAccess.connectArray('words');
 
@@ -287,36 +289,21 @@ app.controller('signInCtrl', ["$scope", "Auth", function ($scope, Auth) {
     };
 }]);
 
-app.controller('addWordCtrl', ["$scope", "dataAccess", "$alert",
-    function ($scope, dataAccess, $alert) {
+app.controller('addWordCtrl', ["$scope", "dataAccess", "alert",
+    function ($scope, dataAccess, alert) {
 
         const CATEGORY_TITLE = "Select category";
         $scope.categorySelected = CATEGORY_TITLE;
 
-        var alert = $alert({
-            title: 'Success!',
-            content: 'Word added succesfully.',
-            type: 'success',
-            container: '#alertContainer',
-            show: false,
-            delay: {hide: 1000}
-        });
+        var alertComp = alert.setText("Word added succesfully!");
 
         $scope.categories = dataAccess.connectArray('categories');
 
         $scope.saveWord = function () {
 
-            console.log();
+            console.log('saveWord');
             if ($scope.categorySelected == CATEGORY_TITLE) {
-                /*var alert = $alert({
-                 title: 'Success!',
-                 content: CATEGORY_TITLE,
-                 type: 'danger',
-                 container: '#alertContainer',
-                 show: false,
-                 delay: {hide: 1000}
-                 });
-                 alert.show();*/
+                // todo: alert z Select category!
             }
             else {
                 var list = dataAccess.connectArray('words');
@@ -337,7 +324,7 @@ app.controller('addWordCtrl', ["$scope", "dataAccess", "$alert",
                     $scope.first = '';
                     $scope.second = '';
                     $scope.category = $scope.categorySelected;
-                    alert.show();
+                    alertComp.show();
 
                 }, function (error) {
                     console.log("Error:", error);
@@ -355,17 +342,10 @@ app.controller('addWordCtrl', ["$scope", "dataAccess", "$alert",
         };
     }
 ]);
-app.controller('addCategoryCtrl', ["$scope", "$alert", "dataAccess",
-    function ($scope, $alert, dataAccess) {
+app.controller('addCategoryCtrl', ["$scope", "alert", "dataAccess",
+    function ($scope, alert, dataAccess) {
 
-        var alert = $alert({
-            title: 'Success!',
-            content: 'Category added succesfully.',
-            type: 'success',
-            container: '#alertContainer',
-            show: false,
-            delay: {hide: 1000}
-        });
+        var alertComp = alert.setText("Category added succesfully.");
 
         $scope.saveCategory = function () {
 
@@ -377,27 +357,20 @@ app.controller('addCategoryCtrl', ["$scope", "$alert", "dataAccess",
 
             list.$add(categoryObj).then(function (ref) {
                 $scope.category = '';
-                alert.show();
+                alertComp.show();
             });
         };
     }]
 );
 
-app.controller('editWordCtrl', ["$scope", "$routeParams", "dataAccess", "$alert",
-    function ($scope, $routeParams, dataAccess, $alert) {
+app.controller('editWordCtrl', ["$scope", "$routeParams", "dataAccess", "alert",
+    function ($scope, $routeParams, dataAccess, alert) {
 
         const CATEGORY_TITLE = "Select category";
         $scope.categorySelected = CATEGORY_TITLE;
         $scope.categories = dataAccess.connectArray('categories');
 
-        var alert = $alert({
-            title: 'Success!',
-            content: 'Word updated succesfully.',
-            type: 'success',
-            container: '#alertContainer',
-            show: false,
-            delay: {hide: 1000}
-        });
+        var alertComp = alert.setText("Word updated succesfully.");
 
         var word = {};
         var id = $routeParams.id;
@@ -420,11 +393,11 @@ app.controller('editWordCtrl', ["$scope", "$routeParams", "dataAccess", "$alert"
             list[id] = word;
 
             list.$save(word).then(function (ref) {
-                alert.show();
+                alertComp.show();
             }).catch(function (error) {
                 console.error("updated failed:", list);
             });
-        }
+        };
 
         $scope.setCategory = function (val) {
             $scope.categorySelected = val;
@@ -437,17 +410,10 @@ app.controller('editWordCtrl', ["$scope", "$routeParams", "dataAccess", "$alert"
 
     }]
 );
-app.controller('editCategoryCtrl', ["$scope", "$routeParams", "dataAccess", "$alert",
-    function ($scope, $routeParams, dataAccess, $alert) {
+app.controller('editCategoryCtrl', ["$scope", "$routeParams", "dataAccess", "alert",
+    function ($scope, $routeParams, dataAccess, alert) {
 
-        var alert = $alert({
-            title: 'Success!',
-            content: 'Category updated succesfully.',
-            type: 'success',
-            container: '#alertContainer',
-            show: false,
-            delay: {hide: 1000}
-        });
+        var alertComp = alert.setText("Category updated succesfully.");
 
         var category = {};
         var id = $routeParams.id;
@@ -465,7 +431,7 @@ app.controller('editCategoryCtrl', ["$scope", "$routeParams", "dataAccess", "$al
             listOfCategories[id] = category;
 
             listOfCategories.$save(category).then(function (ref) {
-                alert.show();
+                alertComp.show();
             }).catch(function (error) {
                 console.error("updated failed:", listOfCategories);
             });
