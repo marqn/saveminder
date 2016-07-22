@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute', 'firebase', 'mgcrea.ngStrap', 'cfp.hotkeys']);
+var app = angular.module('app', ['ngRoute', 'firebase', 'mgcrea.ngStrap', 'cfp.hotkeys', 'timer']);
 
 const DEFAULT_WORDS_NUMBER_LIMIT = 5;
 
@@ -159,6 +159,7 @@ app.factory("alert", ["$alert", function ($alert) {
         }
     }
 }]);
+
 
 /*
  app.factory('gamePage', function () {

@@ -1,9 +1,18 @@
 <div>
     <div>
-        <span>
-            <h5>win: <span class="badge">{{wiemCounter}}</span>
-            lost: <span class="badge">{{niewiemCounter}}</span></h5>
-        </span>
+        <div class="row">
+            <div class="col-md-4">
+                <!--<timer interval="1000">{{hours}} hour{{hoursS}}, {{minutes}} minute{{minutesS}}, {{seconds}} second{{secondsS}}.</timer>-->
+            </div>
+            <div class="col-md-4">
+                <span>
+                    <h5>win: <span class="badge">{{wiemCounter}}</span>
+                    lost: <span class="badge">{{niewiemCounter}}</span></h5>
+                </span>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+
         <div class="progress">
             <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
                  style="width: {{progress}}%;">

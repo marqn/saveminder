@@ -169,10 +169,13 @@ app.controller('appCtrl', ["$scope", "$location", "Auth", "dataAccess",
     }]);
 
 app.controller('indexCtrl', function ($scope, $interval) {
+    $scope.time = new Date();
     $interval(function () {
         $scope.time = new Date();
     }, 1000);
 
+
+    $scope.$broadcast('timer-start');
     // sprawdz ilość słówek
     //      jeśli zero dodaj info o dodaniu jakichś i utwórz kategorię main
 
