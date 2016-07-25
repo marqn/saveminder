@@ -1,6 +1,13 @@
 app.component('gameWindow', {
     controller: function ($scope, dataAccess, hotkeys, ArrayUtil, gameConfiguration) {
 
+        $scope.elapsedTime;
+
+        $scope.$on('timer-stopped', function (event, data){
+            console.log('Timer Stopped - data = ', data.millis);
+            $scope.elapsedTime = data.millis;
+        });
+
         initGame = function () {
             $scope.sprawdz = 1; // 1,2,3,4
             $scope.wordIndex = 0;
@@ -20,6 +27,11 @@ app.component('gameWindow', {
 
             $scope.wiemCounter++;
 
+            if(!$scope.words[$scope.wordIndex].elapsedTime)
+                $scope.words[$scope.wordIndex].elapsedTime = $scope.elapsedTime;
+            else
+                $scope.words[$scope.wordIndex].elapsedTime += $scope.elapsedTime;
+
             $scope.words[$scope.wordIndex].win++;
             $scope.words.$save($scope.wordIndex);
 
@@ -30,6 +42,11 @@ app.component('gameWindow', {
 
             $scope.niewiemCounter++;
 
+            if(!$scope.words[$scope.wordIndex].elapsedTime)
+                $scope.words[$scope.wordIndex].elapsedTime = $scope.elapsedTime;
+            else
+                $scope.words[$scope.wordIndex].elapsedTime += $scope.elapsedTime;
+
             $scope.words[$scope.wordIndex].lost++;
             $scope.words.$save($scope.wordIndex);
 
@@ -38,6 +55,9 @@ app.component('gameWindow', {
 
         $scope.next = function () {
 
+            $scope.$broadcast('timer-stop');
+
+            console.log($scope.elapsedTimer);
             $scope.words[$scope.wordIndex].refresh++;
             $scope.words.$save($scope.wordIndex);
 
@@ -50,8 +70,13 @@ app.component('gameWindow', {
 
         nextWord = function () {
             $scope.sprawdz = 1;
+
             if (gameConfiguration.getWordsLimit() - 1 == $scope.wordIndex) {
                 $scope.sprawdz = 4;
+            }
+            else
+            {
+                $scope.$broadcast('timer-start');
             }
             $scope.wordIndex++;
             $scope.progress = Math.floor(($scope.wordIndex / gameConfiguration.getWordsLimit()) * 100);

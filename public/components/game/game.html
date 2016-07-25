@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="col-md-4">
-                <!--<timer interval="1000">{{hours}} hour{{hoursS}}, {{minutes}} minute{{minutesS}}, {{seconds}} second{{secondsS}}.</timer>-->
+                <timer ng-model="elapsedTimer" interval="100">elapsed time: {{sseconds}}:{{millis | date:'sss' | limitTo:2}}</timer>
             </div>
             <div class="col-md-4">
                 <span>
@@ -10,7 +10,9 @@
                     lost: <span class="badge">{{niewiemCounter}}</span></h5>
                 </span>
             </div>
-            <div class="col-md-4"></div>
+            <div class="col-md-4">
+
+            </div>
         </div>
 
         <div class="progress">
