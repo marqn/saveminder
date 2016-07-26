@@ -5,6 +5,18 @@
 
     <div class="container text-center" ng-if="page == 'select games mode'">
 
+        <div class="row text-center">
+            <button ng-class="typeOfGameBtn.getClass('hideSecond')" ng-click="typeOfGameBtn.setValue('hideSecond')">
+                Hide second
+            </button>
+            <button ng-class="typeOfGameBtn.getClass('hideFirst')" ng-click="typeOfGameBtn.setValue('hideFirst')">
+                Hide first
+            </button>
+            <button ng-class="typeOfGameBtn.getClass('mixed')" ng-click="typeOfGameBtn.setValue('mixed')">
+                Mixed
+            </button>
+        </div>
+
         <span>
             <h3>Select category:</h3>
             <input type="text">

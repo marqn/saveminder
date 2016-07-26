@@ -23,7 +23,7 @@
                     <th>Category:</th>
                     <th>Remember time:</th>
                     <th>Date added:</th>
-                    <th>Refresh:</th>
+                    <th>Raiting:</th>
                     <th>Elapsed time:</th>
                     <th>Operations:</th>
                 </tr>
@@ -34,10 +34,10 @@
                     <td>{{word.first}}</td>
                     <td>{{word.second}}</td>
                     <td>{{word.category}}</td>
-                    <td>{{word.rememberTime}}</td>
+                    <td>{{word.elapsedTime / word.refresh | date:'ss:sss'}}</td>
                     <td>{{word.data_added | date:'dd-MM-yyyy'}}</td>
                     <td>{{word.refresh}}</td>
-                    <td>{{word.elapsedTime}}</td>
+                    <td>{{word.elapsedTime | date:'mm:ss:sss'}}</td>
                     <td>
                         <a class="btn btn-success btn-sm" href="#/edit_word/{{$index}}" role="button">Edit</a>
                         <a class="btn btn-danger btn-sm" ng-click="deleteWord($index)" role="button">Delete</a>

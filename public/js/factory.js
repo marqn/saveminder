@@ -144,6 +144,27 @@ app.factory("selectButton", function (modeGame) {
 
 });
 
+app.factory("typeOfGameBtn", function () {
+    var lastSelect;
+    return {
+        getClass: function (val) {
+
+            if(val != lastSelect)
+                return "btn btn-info btn-lg";
+            else
+                return "btn btn-success btn-lg";
+        },
+        setValue: function(val)
+        {
+            lastSelect = val;
+        },
+        getValue: function () {
+            return lastSelect;
+        }
+    }
+
+});
+
 app.factory("alert", ["$alert", function ($alert) {
     return {
         setText: function (text) {

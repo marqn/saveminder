@@ -1,10 +1,9 @@
 app.component('gameWindow', {
-    controller: function ($scope, dataAccess, hotkeys, ArrayUtil, gameConfiguration) {
+    controller: function ($scope, dataAccess, hotkeys, ArrayUtil, gameConfiguration, typeOfGameBtn) {
 
         $scope.elapsedTime;
 
         $scope.$on('timer-stopped', function (event, data){
-            console.log('Timer Stopped - data = ', data.millis);
             $scope.elapsedTime = data.millis;
         });
 
@@ -21,6 +20,7 @@ app.component('gameWindow', {
                 .then(function () {
                     $scope.words = ArrayUtil.shuffleArray(list);
                 });
+            $scope.$broadcast('timer-start');
         };
 
         $scope.wiem = function () {
@@ -207,15 +207,16 @@ app.controller('indexCtrl', function ($scope, $interval) {
 
 });
 
-app.controller('learnCtrl', ["$scope", "dataAccess", "gameConfiguration", "modeGame", "selectButton",
-    function ($scope, dataAccess, gameConfiguration, modeGame, selectButton) {
+app.controller('learnCtrl', ["$scope", "dataAccess", "gameConfiguration", "modeGame", "selectButton", "typeOfGameBtn",
+    function ($scope, dataAccess, gameConfiguration, modeGame, selectButton, typeOfGameBtn) {
         $scope.page = 'select games mode';
 
         $scope.numberOfWords = DEFAULT_WORDS_NUMBER_LIMIT;
         gameConfiguration.setWordsLimit($scope.numberOfWords);
         $scope.mode = modeGame;
         $scope.selectButton = selectButton;
-        
+        $scope.typeOfGameBtn = typeOfGameBtn;
+
 
         var list = dataAccess.connectArray('words');
 

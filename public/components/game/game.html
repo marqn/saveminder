@@ -2,12 +2,12 @@
     <div>
         <div class="row">
             <div class="col-md-4">
-                <timer ng-model="elapsedTimer" interval="100">elapsed time: {{sseconds}}:{{millis | date:'sss' | limitTo:2}}</timer>
+                <timer ng-model="elapsedTimer" interval="100">elapsed time: <h2>{{sseconds}}:{{millis | date:'sss' | limitTo:2}}</h2></timer>
             </div>
             <div class="col-md-4">
                 <span>
-                    <h5>win: <span class="badge">{{wiemCounter}}</span>
-                    lost: <span class="badge">{{niewiemCounter}}</span></h5>
+                    <h5>win: <span class="label label-pill label-success">{{wiemCounter}}</span>
+                    lost: <span class="label label-pill label-danger">{{niewiemCounter}}</span></h5>
                 </span>
             </div>
             <div class="col-md-4">
