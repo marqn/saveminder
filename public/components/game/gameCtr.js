@@ -3,6 +3,8 @@ app.component('gameWindow', {
 
         $scope.elapsedTime;
 
+        console.log(gameConfiguration);
+
         $scope.$on('timer-stopped', function (event, data) {
             $scope.elapsedTime = data.millis;
         });
@@ -71,14 +73,14 @@ app.component('gameWindow', {
         nextWord = function () {
             $scope.sprawdz = 1;
 
-            if (gameConfiguration.getWordsLimit() - 1 == $scope.wordIndex) {
+            if (gameConfiguration.numberOfWords - 1 == $scope.wordIndex) {
                 $scope.sprawdz = 4;
             }
             else {
                 $scope.$broadcast('timer-start');
             }
             $scope.wordIndex++;
-            $scope.progress = Math.floor(($scope.wordIndex / gameConfiguration.getWordsLimit()) * 100);
+            $scope.progress = Math.floor(($scope.wordIndex / gameConfiguration.numberOfWords) * 100);
         };
 
         hotkeys.bindTo($scope)

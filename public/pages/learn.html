@@ -23,8 +23,8 @@
         </span>
 
         <span>
-            <h3>Number of words:{{numberOfWords}}</h3>
-            <input type="range" value="20" min="5" max="allWordsNumber"  ng-model="numberOfWords">
+            <h3>Number of words:{{gameConfiguration.numberOfWords}}</h3>
+            <input type="range" min="5" max="{{allWordsNumber}}" ng-model="gameConfiguration.numberOfWords" ng-model-options="{ getterSetter: true }">
         </span>
 
 

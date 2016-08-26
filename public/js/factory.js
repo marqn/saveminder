@@ -54,30 +54,12 @@ app.factory("ArrayUtil", function () {
 });
 
 app.factory("gameConfiguration", function () {
-    var modeGame, category, wordsLimit;
-
     return {
-        getModeGame: function () {
-            return modeGame;
-        },
-        setModeGame: function (val) {
-            modeGame = val;
-        },
-        getCategory: function () {
-            return category;
-        },
-        setCategory: function (val) {
-            category = val;
-        },
-        getWordsLimit: function () {
-            if (!wordsLimit)
-                wordsLimit = DEFAULT_WORDS_NUMBER_LIMIT;
-            return wordsLimit;
-        },
-        setWordsLimit: function (val) {
-            wordsLimit = val;
-        }
-    }
+        hideType: '',
+        modeGame: '',
+        category: '',
+        numberOfWords: DEFAULT_WORDS_NUMBER_LIMIT
+    };
 });
 
 app.factory("managerModel", function () {
@@ -88,26 +70,26 @@ app.factory("managerModel", function () {
             state = val;
         },
         getState: function () {
-            if(!state)
+            if (!state)
                 state = "wordState";
             return state;
         },
-        setWordState: function() {
+        setWordState: function () {
             state = 'wordState';
             return state;
         },
-        setCategoryState: function() {
+        setCategoryState: function () {
             state = 'categoryState';
             return state;
         },
         isWordState: function () {
-            if(state == 'wordState')
+            if (state == 'wordState')
                 return true;
             else
                 return false;
         },
         isCategoryState: function () {
-            if(state == 'categoryState')
+            if (state == 'categoryState')
                 return true;
             else
                 return false;
@@ -135,9 +117,9 @@ app.factory("selectButton", function (modeGame) {
     return {
         getClass: function (val) {
 
-            if(val != modeGame.getModeGame())
+            if (val != modeGame.getModeGame())
                 return "btn btn-info btn-lg";
-            else 
+            else
                 return "btn btn-success btn-lg";
         }
     }
@@ -149,13 +131,12 @@ app.factory("typeOfGameBtn", function () {
     return {
         getClass: function (val) {
 
-            if(val != lastSelect)
+            if (val != lastSelect)
                 return "btn btn-info btn-lg";
             else
                 return "btn btn-success btn-lg";
         },
-        setValue: function(val)
-        {
+        setValue: function (val) {
             lastSelect = val;
         },
         getValue: function () {

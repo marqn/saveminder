@@ -98,21 +98,22 @@ app.controller('learnCtrl', ["$scope", "dataAccess", "gameConfiguration", "modeG
     function ($scope, dataAccess, gameConfiguration, modeGame, selectButton, typeOfGameBtn) {
         $scope.page = 'select games mode';
 
-        $scope.numberOfWords = DEFAULT_WORDS_NUMBER_LIMIT;
-        gameConfiguration.setWordsLimit($scope.numberOfWords);
+        $scope.gameConfiguration = gameConfiguration;
         $scope.mode = modeGame;
         $scope.selectButton = selectButton;
         $scope.typeOfGameBtn = typeOfGameBtn;
 
-
+        // pobiera liczbę wszystkich wyrazów
         var list = dataAccess.connectArray('words');
-
         list.$loaded()
             .then(function () {
                 $scope.allWordsNumber = list.length;
+                console.log('list.length:' + list.length);
             });
+        /////////////////////////////////////
 
         $scope.startGame = function () {
+            gameConfiguration = $scope.gameConfiguration;
             $scope.page = 'running game';
         };
 
