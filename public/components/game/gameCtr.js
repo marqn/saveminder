@@ -3,11 +3,14 @@ app.component('gameWindow', {
 
         $scope.elapsedTime;
 
-        // console.log(gameConfiguration);
-
         $scope.$on('timer-stopped', function (event, data) {
             $scope.elapsedTime = data.millis;
         });
+
+        var mixedObj = {
+            repeat: 0,
+            value: false
+        };
 
         initGame = function () {
             $scope.sprawdz = 1; // 1,2,3,4
@@ -27,53 +30,52 @@ app.component('gameWindow', {
             $scope.$broadcast('timer-start');
         };
 
-        $scope.getFirst = function () {
-            var option = 'first';
-            if(gameConfiguration.hideType == "hideFirst")
-            {
-                option = 'second';
+        $scope.getWord = function (option) { //todo: too many refresh - bug!
+            if (gameConfiguration.hideType == "hideFirst") {
+                return returnWord(reverseType(option));
+            }
+            if (gameConfiguration.hideType == "mixed") {
+
+                if (mixedObj.repeat > 1) {
+                    mixedObj.repeat = 0;
+                    mixedObj.value = randomBool();
+                }
+
+                mixedObj.repeat++;
+
+                if (mixedObj.value)
+                    return returnWord(reverseType(option));
+                else
+                    return returnWord(option);
             }
 
-            if(gameConfiguration.hideType == "mixed")
-            {
-                option = 'second';
-            }
-
-            return getWord(option);
-        };
-        
-        $scope.getSecond = function () {
-            var option = 'second';
-            if(gameConfiguration.hideType == "hideFirst")
-            {
-                option = 'first';
-            }
-
-            if(gameConfiguration.hideType == "mixed")
-            {
-                option = 'first';
-            }
-
-            return getWord(option);
+            return returnWord(option);
         };
 
-        getWord = function (type) {
+        reverseType = function (option) {
 
+            if (option == "first")
+                return 'second';
+            else
+                return 'first';
+
+        };
+
+        returnWord = function (type) {
             var index = $scope.wordIndex;
 
-            if(type == 'first')
-            {
+            if (type == 'first') {
                 return $scope.words[index].first;
             }
-            if(type == 'second')
-            {
+            if (type == 'second') {
                 return $scope.words[index].second;
             }
-
-            return $scope.words[index].second;
         };
 
-        
+        randomBool = function () {
+            var randomNumber = Math.random() >= 0.5;
+            return randomNumber;
+        };
 
         $scope.wiem = function () {
 
@@ -109,7 +111,6 @@ app.component('gameWindow', {
 
             $scope.$broadcast('timer-stop');
 
-            console.log($scope.elapsedTimer);
             $scope.words[$scope.wordIndex].refresh++;
             $scope.words.$save($scope.wordIndex);
 
