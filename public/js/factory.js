@@ -55,10 +55,19 @@ app.factory("ArrayUtil", function () {
 
 app.factory("gameConfiguration", function () {
     return {
-        hideType: '',
+        hideType: 'hideSecond',
         modeGame: '',
         category: '',
-        numberOfWords: DEFAULT_WORDS_NUMBER_LIMIT
+        numberOfWords: DEFAULT_WORDS_NUMBER_LIMIT,
+        getHideType: function (val) {
+            if (val != this.hideType)
+                return "btn btn-info btn-lg";
+            else
+                return "btn btn-success btn-lg";
+        },
+        setHideType: function (val) {
+            this.hideType = val;
+        }
     };
 });
 
@@ -121,26 +130,6 @@ app.factory("selectButton", function (modeGame) {
                 return "btn btn-info btn-lg";
             else
                 return "btn btn-success btn-lg";
-        }
-    }
-
-});
-
-app.factory("typeOfGameBtn", function () {
-    var lastSelect;
-    return {
-        getClass: function (val) {
-
-            if (val != lastSelect)
-                return "btn btn-info btn-lg";
-            else
-                return "btn btn-success btn-lg";
-        },
-        setValue: function (val) {
-            lastSelect = val;
-        },
-        getValue: function () {
-            return lastSelect;
         }
     }
 

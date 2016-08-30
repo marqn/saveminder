@@ -4,15 +4,16 @@
     </div>
 
     <div class="container text-center" ng-if="page == 'select games mode'">
+        <div class="col-md-6">
 
         <div class="row text-center">
-            <button ng-class="typeOfGameBtn.getClass('hideSecond')" ng-click="typeOfGameBtn.setValue('hideSecond')">
+            <button ng-class="gameConfiguration.getHideType('hideSecond')" ng-click="gameConfiguration.setHideType('hideSecond')">
                 Hide second
             </button>
-            <button ng-class="typeOfGameBtn.getClass('hideFirst')" ng-click="typeOfGameBtn.setValue('hideFirst')">
+            <button ng-class="gameConfiguration.getHideType('hideFirst')" ng-click="gameConfiguration.setHideType('hideFirst')">
                 Hide first
             </button>
-            <button ng-class="typeOfGameBtn.getClass('mixed')" ng-click="typeOfGameBtn.setValue('mixed')">
+            <button ng-class="gameConfiguration.getHideType('mixed')" ng-click="gameConfiguration.setHideType('mixed')">
                 Mixed
             </button>
         </div>
@@ -24,12 +25,13 @@
 
         <span>
             <h3>Number of words:{{gameConfiguration.numberOfWords}}</h3>
-            <input type="range" min="5" max="{{allWordsNumber}}" ng-model="gameConfiguration.numberOfWords" ng-model-options="{ getterSetter: true }">
+            <input type="range" min="5" max="{{allWordsNumber}}" ng-model="gameConfiguration.numberOfWords"
+                   ng-model-options="{ getterSetter: true }">
         </span>
 
 
-        <h3>Select mode:{{mode.getModeGame()}}</h3>
-        <div class="row text-center">
+            <h3>Select mode:{{mode.getHideType()}}</h3>
+            <div class="row text-center">
 
                 <button ng-class="selectButton.getClass('last')" ng-click="mode.setModeGame('last')">
                     Last
@@ -51,11 +53,15 @@
                     much longer wonder
                 </button>
 
+            </div>
+            <div>
+                <button class="btn btn-success btn-lg" ng-click="startGame()">
+                    Start
+                </button>
+            </div>
         </div>
-        <div>
-            <button class="btn btn-success btn-lg" ng-click="startGame()">
-                Start
-            </button>
+        <div class="col-md-6">
+            img
         </div>
     </div>
 

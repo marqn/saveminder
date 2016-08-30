@@ -26,7 +26,7 @@
         <div ng-if="sprawdz != 4">
             <h2>
             <span class="label label-primary">
-                {{words[wordIndex].first | lowercase}}
+                {{getFirst() | lowercase}}
             </span>
             </h2>
 
@@ -36,7 +36,7 @@
 
             <h2 ng-show="sprawdz == 2">
             <span class="label label-success">
-                {{words[wordIndex].second | lowercase}}
+                {{getSecond() | lowercase}}
             </span>
             </h2>
         </div>

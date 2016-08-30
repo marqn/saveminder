@@ -1,9 +1,9 @@
 app.component('gameWindow', {
-    controller: function ($scope, dataAccess, hotkeys, ArrayUtil, gameConfiguration, typeOfGameBtn) {
+    controller: function ($scope, dataAccess, hotkeys, ArrayUtil, gameConfiguration) {
 
         $scope.elapsedTime;
 
-        console.log(gameConfiguration);
+        // console.log(gameConfiguration);
 
         $scope.$on('timer-stopped', function (event, data) {
             $scope.elapsedTime = data.millis;
@@ -20,10 +20,60 @@ app.component('gameWindow', {
 
             list.$loaded()
                 .then(function () {
+
                     $scope.words = ArrayUtil.shuffleArray(list);
+
                 });
             $scope.$broadcast('timer-start');
         };
+
+        $scope.getFirst = function () {
+            var option = 'first';
+            if(gameConfiguration.hideType == "hideFirst")
+            {
+                option = 'second';
+            }
+
+            if(gameConfiguration.hideType == "mixed")
+            {
+                option = 'second';
+            }
+
+            return getWord(option);
+        };
+        
+        $scope.getSecond = function () {
+            var option = 'second';
+            if(gameConfiguration.hideType == "hideFirst")
+            {
+                option = 'first';
+            }
+
+            if(gameConfiguration.hideType == "mixed")
+            {
+                option = 'first';
+            }
+
+            return getWord(option);
+        };
+
+        getWord = function (type) {
+
+            var index = $scope.wordIndex;
+
+            if(type == 'first')
+            {
+                return $scope.words[index].first;
+            }
+            if(type == 'second')
+            {
+                return $scope.words[index].second;
+            }
+
+            return $scope.words[index].second;
+        };
+
+        
 
         $scope.wiem = function () {
 
