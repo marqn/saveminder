@@ -94,19 +94,16 @@ app.controller('indexCtrl', function ($scope, $interval) {
 });
 
 app.controller('learnCtrl', ["$scope", "dataAccess", "gameConfiguration",
-    function ($scope, dataAccess, gameConfiguration, selectButton) {
+    function ($scope, dataAccess, gameConfiguration) {
         $scope.page = 'select games mode';
 
         $scope.gameConfiguration = gameConfiguration;
-        // $scope.mode = modeGame;
-        $scope.selectButton = selectButton;
 
         // pobiera liczbę wszystkich wyrazów
         var list = dataAccess.connectArray('words');
         list.$loaded()
             .then(function () {
-                $scope.allWordsNumber = list.length;
-                console.log('list.length:' + list.length);
+                gameConfiguration.allWordsNumber = list.length;
             });
         /////////////////////////////////////
 

@@ -55,8 +55,10 @@ app.factory("ArrayUtil", function () {
 
 app.factory("gameConfiguration", function () {
     return {
+        numberOfWords: 0,
+        allWordsNumber: 0,
         hideType: 'hideSecond',
-        modeGame: '',
+        modeGame: 'all',
         category: '',
         numberOfWords: DEFAULT_WORDS_NUMBER_LIMIT,
 
@@ -148,30 +150,5 @@ app.factory("alert", ["$alert", function ($alert) {
     }
 }]);
 
-
-/*
- app.factory('gamePage', function () {
- var index = 1;
- return {
- nextPage: function () {
- index++;
- if (index > 4) {
- index = 1;
- }
- console.log(index);
- return index;
- },
- endPage: function () {
- index = 4;
- console.log(index);
- return index;
- },
- getPage: function () {
- console.log(index);
- return index;
- }
- };
- });
- */
 
 app.value("selectedItem", null);

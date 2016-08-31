@@ -26,14 +26,26 @@ app.component('gameWindow', {
             list.$loaded()
                 .then(function () {
 
-                    $scope.words = ArrayUtil.shuffleArray(list);
+                    if(gameConfiguration.modeGame == 'all')
+                        $scope.words = ArrayUtil.shuffleArray(list);
+
+                    if(gameConfiguration.modeGame == 'random')
+                        $scope.words = ArrayUtil.shuffleArray(list);
+
+                    if(gameConfiguration.modeGame == 'last')
+                    {
+                        $scope.words = list;
+
+                        var start = gameConfiguration.allWordsNumber - gameConfiguration.numberOfWords;
+                        $scope.wordIndex = start;
+                    }
 
                     setWordIntoView();
                 });
             $scope.$broadcast('timer-start');
         };
 
-        getWord = function (option) { //todo: too many refresh - bug!
+        getWord = function (option) {
             if (gameConfiguration.hideType == "hideFirst") {
                 return returnWord(reverseType(option));
             }
@@ -118,6 +130,9 @@ app.component('gameWindow', {
             $scope.words.$save($scope.wordIndex);
 
             $scope.sprawdz++;
+
+            console.log($scope.words[$scope.wordIndex]);
+            console.log($scope.words.$getRecord("-KMczZQx94IuK4diwtfH"));
         };
 
         $scope.startGame = function () {
@@ -126,6 +141,9 @@ app.component('gameWindow', {
 
         nextWord = function () {
             $scope.sprawdz = 1;
+
+            console.log('numberOfWords:'+gameConfiguration.numberOfWords);
+            console.log('wordIndex:'+$scope.wordIndex);
 
             if (gameConfiguration.numberOfWords - 1 == $scope.wordIndex) {
                 $scope.sprawdz = 4;
