@@ -30,26 +30,26 @@
         </span>
 
 
-            <h3>Select mode:{{mode.getHideType()}}</h3>
+            <h3>Select mode:{{gameConfiguration.modeGame}}</h3>
             <div class="row text-center">
 
-                <button ng-class="selectButton.getClass('last')" ng-click="mode.setModeGame('last')">
+                <button ng-class="gameConfiguration.getModeGame('last')" ng-click="gameConfiguration.setModeGame('last')">
                     Last
                 </button>
 
-                <button ng-class="selectButton.getClass('all')" ng-click="mode.setModeGame('all')">
+                <button ng-class="gameConfiguration.getModeGame('all')" ng-click="gameConfiguration.setModeGame('all')">
                     All
                 </button>
 
-                <button ng-class="selectButton.getClass('random')" ng-click="mode.setModeGame('random')">
+                <button ng-class="gameConfiguration.getModeGame('random')" ng-click="gameConfiguration.setModeGame('random')">
                     Random queue
                 </button>
 
-                <button ng-class="selectButton.getClass('raiting')" ng-click="mode.setModeGame('raiting')">
+                <button ng-class="gameConfiguration.getModeGame('raiting')" ng-click="gameConfiguration.setModeGame('raiting')">
                     Bad raiting
                 </button>
 
-                <button ng-class="selectButton.getClass('wonder')" ng-click="mode.setModeGame('wonder')">
+                <button ng-class="gameConfiguration.getModeGame('wonder')" ng-click="gameConfiguration.setModeGame('wonder')">
                     much longer wonder
                 </button>
 

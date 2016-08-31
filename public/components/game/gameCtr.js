@@ -2,6 +2,8 @@ app.component('gameWindow', {
     controller: function ($scope, dataAccess, hotkeys, ArrayUtil, gameConfiguration) {
 
         $scope.elapsedTime;
+        $scope.firstWordReff;
+        $scope.secondWordReff;
 
         $scope.$on('timer-stopped', function (event, data) {
             $scope.elapsedTime = data.millis;
@@ -26,11 +28,12 @@ app.component('gameWindow', {
 
                     $scope.words = ArrayUtil.shuffleArray(list);
 
+                    setWordIntoView();
                 });
             $scope.$broadcast('timer-start');
         };
 
-        $scope.getWord = function (option) { //todo: too many refresh - bug!
+        getWord = function (option) { //todo: too many refresh - bug!
             if (gameConfiguration.hideType == "hideFirst") {
                 return returnWord(reverseType(option));
             }
@@ -131,7 +134,15 @@ app.component('gameWindow', {
                 $scope.$broadcast('timer-start');
             }
             $scope.wordIndex++;
+
+            setWordIntoView();
+
             $scope.progress = Math.floor(($scope.wordIndex / gameConfiguration.numberOfWords) * 100);
+        };
+
+        setWordIntoView = function () {
+            $scope.firstWordReff = getWord('first');
+            $scope.secondWordReff = getWord('second');
         };
 
         hotkeys.bindTo($scope)

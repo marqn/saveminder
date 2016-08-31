@@ -48,7 +48,6 @@ app.controller('appCtrl', ["$scope", "$location", "Auth", "dataAccess",
             var obj = dataAccess.connectObj('userData');
 
             obj.$loaded().then(function () {
-                console.log(obj.email);
                 obj.lastLogin = new Date().getTime();
 
                 if (!obj.email) {
@@ -94,12 +93,12 @@ app.controller('indexCtrl', function ($scope, $interval) {
 
 });
 
-app.controller('learnCtrl', ["$scope", "dataAccess", "gameConfiguration", "modeGame", "selectButton",
-    function ($scope, dataAccess, gameConfiguration, modeGame, selectButton) {
+app.controller('learnCtrl', ["$scope", "dataAccess", "gameConfiguration",
+    function ($scope, dataAccess, gameConfiguration, selectButton) {
         $scope.page = 'select games mode';
 
         $scope.gameConfiguration = gameConfiguration;
-        $scope.mode = modeGame;
+        // $scope.mode = modeGame;
         $scope.selectButton = selectButton;
 
         // pobiera liczbę wszystkich wyrazów

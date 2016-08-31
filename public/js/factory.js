@@ -59,6 +59,7 @@ app.factory("gameConfiguration", function () {
         modeGame: '',
         category: '',
         numberOfWords: DEFAULT_WORDS_NUMBER_LIMIT,
+
         getHideType: function (val) {
             if (val != this.hideType)
                 return "btn btn-info btn-lg";
@@ -67,6 +68,15 @@ app.factory("gameConfiguration", function () {
         },
         setHideType: function (val) {
             this.hideType = val;
+        },
+        getModeGame: function (val) {
+            if (val != this.modeGame)
+                return "btn btn-info btn-lg";
+            else
+                return "btn btn-success btn-lg";
+        },
+        setModeGame: function (val) {
+            this.modeGame = val;
         }
     };
 });
@@ -107,19 +117,6 @@ app.factory("managerModel", function () {
     };
 });
 
-app.factory("modeGame", function () {
-    var modeGame;
-
-    return {
-        setModeGame: function (val) {
-            modeGame = val;
-            return modeGame;
-        },
-        getModeGame: function () {
-            return modeGame;
-        }
-    }
-});
 
 app.factory("selectButton", function (modeGame) {
 
