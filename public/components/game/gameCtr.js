@@ -9,7 +9,7 @@ app.component('gameWindow', {
             $scope.elapsedTime = data.millis;
         });
 
-        var mixedObj = {
+        var mixedOptionObj = {
             repeat: 0,
             value: false
         };
@@ -32,12 +32,24 @@ app.component('gameWindow', {
                     if(gameConfiguration.modeGame == 'random')
                         $scope.words = ArrayUtil.shuffleArray(list);
 
+                    if(gameConfiguration.modeGame == 'raiting')
+                    {
+                        $scope.words = list;
+                        $scope.words = ArrayUtil.sortByBadRaiting($scope.words);
+                    }
+
+                    if(gameConfiguration.modeGame == 'wonder')
+                    {
+                        $scope.words = list;
+                        $scope.words = ArrayUtil.sortByMuchLongerWonder($scope.words);
+                    }
+
                     if(gameConfiguration.modeGame == 'last')
                     {
                         $scope.words = list;
-
-                        var start = gameConfiguration.allWordsNumber - gameConfiguration.numberOfWords;
-                        $scope.wordIndex = start;
+                        var start = gameConfiguration.allWordsNumber - (gameConfiguration.numberOfWords);
+                        $scope.words.splice(0, start);
+                        $scope.words = ArrayUtil.shuffleArray($scope.words);
                     }
 
                     setWordIntoView();
@@ -51,14 +63,14 @@ app.component('gameWindow', {
             }
             if (gameConfiguration.hideType == "mixed") {
 
-                if (mixedObj.repeat > 1) {
-                    mixedObj.repeat = 0;
-                    mixedObj.value = randomBool();
+                if (mixedOptionObj.repeat > 1) {
+                    mixedOptionObj.repeat = 0;
+                    mixedOptionObj.value = randomBool();
                 }
 
-                mixedObj.repeat++;
+                mixedOptionObj.repeat++;
 
-                if (mixedObj.value)
+                if (mixedOptionObj.value)
                     return returnWord(reverseType(option));
                 else
                     return returnWord(option);
@@ -126,13 +138,12 @@ app.component('gameWindow', {
 
             $scope.$broadcast('timer-stop');
 
-            $scope.words[$scope.wordIndex].refresh++;
+            var wordItem = $scope.words[$scope.wordIndex];
+
+            wordItem.refresh++;
             $scope.words.$save($scope.wordIndex);
 
             $scope.sprawdz++;
-
-            console.log($scope.words[$scope.wordIndex]);
-            console.log($scope.words.$getRecord("-KMczZQx94IuK4diwtfH"));
         };
 
         $scope.startGame = function () {
@@ -142,18 +153,15 @@ app.component('gameWindow', {
         nextWord = function () {
             $scope.sprawdz = 1;
 
-            console.log('numberOfWords:'+gameConfiguration.numberOfWords);
-            console.log('wordIndex:'+$scope.wordIndex);
-
             if (gameConfiguration.numberOfWords - 1 == $scope.wordIndex) {
                 $scope.sprawdz = 4;
             }
             else {
                 $scope.$broadcast('timer-start');
+                $scope.wordIndex++;
+                setWordIntoView();
             }
-            $scope.wordIndex++;
 
-            setWordIntoView();
 
             $scope.progress = Math.floor(($scope.wordIndex / gameConfiguration.numberOfWords) * 100);
         };

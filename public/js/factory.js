@@ -49,7 +49,44 @@ app.factory("ArrayUtil", function () {
                 array[i] = t;
             }
             return array;
+        },
+        sortByBadRaiting: function (array) {
+
+            for (var i = 0; i < array.length; i++) {
+                var obj = array[i];
+                obj.raiting = obj.win - obj.lost;
+            }
+
+            array.sort(function(a,b) {
+                return a.raiting - b.raiting;
+            });
+
+            for (var i = 0; i < array.length; i++) {
+                var obj = array[i];
+                delete obj.raiting;
+            }
+            
+            return array;
+        },
+        sortByMuchLongerWonder: function (array) {
+
+            for (var i = 0; i < array.length; i++) {
+                var obj = array[i];
+                obj.raiting = obj.elapsedTime / obj.refresh;
+            }
+
+            array.sort(function(a,b) {
+                return a.raiting - b.raiting;
+            });
+
+            for (var i = 0; i < array.length; i++) {
+                var obj = array[i];
+                delete obj.raiting;
+            }
+
+            return array;
         }
+
     }
 });
 
