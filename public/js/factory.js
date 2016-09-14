@@ -157,20 +157,6 @@ app.factory("managerModel", function () {
 });
 
 
-app.factory("selectButton", function (modeGame) {
-
-    return {
-        getClass: function (val) {
-
-            if (val != modeGame.getModeGame())
-                return "btn btn-info btn-lg";
-            else
-                return "btn btn-success btn-lg";
-        }
-    }
-
-});
-
 app.factory("alert", ["$alert", function ($alert) {
     return {
         setText: function (text) {
@@ -186,6 +172,5 @@ app.factory("alert", ["$alert", function ($alert) {
         }
     }
 }]);
-
 
 app.value("selectedItem", null);

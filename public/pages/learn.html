@@ -6,26 +6,38 @@
     <div class="container text-center" ng-if="page == 'select games mode'">
         <div class="col-md-6">
 
-        <div class="row text-center">
-            <button ng-class="gameConfiguration.getHideType('hideSecond')" ng-click="gameConfiguration.setHideType('hideSecond')">
-                Hide second
-            </button>
-            <button ng-class="gameConfiguration.getHideType('hideFirst')" ng-click="gameConfiguration.setHideType('hideFirst')">
-                Hide first
-            </button>
-            <button ng-class="gameConfiguration.getHideType('mixed')" ng-click="gameConfiguration.setHideType('mixed')">
-                Mixed
-            </button>
-        </div>
+            <div class="row text-center">
+                <button ng-class="gameConfiguration.getHideType('hideSecond')"
+                        ng-click="gameConfiguration.setHideType('hideSecond')">
+                    Hide second
+                </button>
+                <button ng-class="gameConfiguration.getHideType('hideFirst')"
+                        ng-click="gameConfiguration.setHideType('hideFirst')">
+                    Hide first
+                </button>
+                <button ng-class="gameConfiguration.getHideType('mixed')"
+                        ng-click="gameConfiguration.setHideType('mixed')">
+                    Mixed
+                </button>
+            </div>
 
         <span>
             <h3>Select category:</h3>
-            <input type="text">
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    {{getCategory()}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="left: 50%; right: auto; text-align: center; transform: translate(-50%, 0);">
+                    <li ng-repeat="category in categories"><a class="btn" ng-click="setCategory(category)">{{category.categoryName}}</a></li>
+                </ul>
+              </div>
         </span>
 
         <span>
             <h3>Number of words:{{gameConfiguration.numberOfWords}}</h3>
-            <input type="range" min="5" max="{{gameConfiguration.allWordsNumber}}" ng-model="gameConfiguration.numberOfWords"
+            <input type="range" min="5" max="{{gameConfiguration.allWordsNumber}}"
+                   ng-model="gameConfiguration.numberOfWords"
                    ng-model-options="{ getterSetter: true }">
         </span>
 
@@ -33,7 +45,8 @@
             <h3>Select mode:{{gameConfiguration.modeGame}}</h3>
             <div class="row text-center">
 
-                <button ng-class="gameConfiguration.getModeGame('last')" ng-click="gameConfiguration.setModeGame('last')">
+                <button ng-class="gameConfiguration.getModeGame('last')"
+                        ng-click="gameConfiguration.setModeGame('last')">
                     Last
                 </button>
 
@@ -41,15 +54,18 @@
                     All
                 </button>
 
-                <button ng-class="gameConfiguration.getModeGame('random')" ng-click="gameConfiguration.setModeGame('random')">
+                <button ng-class="gameConfiguration.getModeGame('random')"
+                        ng-click="gameConfiguration.setModeGame('random')">
                     Random queue
                 </button>
 
-                <button ng-class="gameConfiguration.getModeGame('raiting')" ng-click="gameConfiguration.setModeGame('raiting')">
+                <button ng-class="gameConfiguration.getModeGame('raiting')"
+                        ng-click="gameConfiguration.setModeGame('raiting')">
                     Bad raiting
                 </button>
 
-                <button ng-class="gameConfiguration.getModeGame('wonder')" ng-click="gameConfiguration.setModeGame('wonder')">
+                <button ng-class="gameConfiguration.getModeGame('wonder')"
+                        ng-click="gameConfiguration.setModeGame('wonder')">
                     much longer wonder
                 </button>
 

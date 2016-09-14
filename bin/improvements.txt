@@ -1,18 +1,12 @@
  --- GAME.html ---
- 1. dodać w grze numer słówka (postęp nauki)
+
  2. czas w jakim się uczymy (całkowity i zastanawiania się)
- 3. dodać opcje gry (wybór wyrazów na podstawie
-                    + ilości
-                    + kategorii
-                    + daty dodania (ostatnie 20)
-                    + raitingu (nauczone/zapomniane)
-                    + losowe
-                    + wszystkie
-                    + najdłużej zastanawiane się
+
  4. dodać przypisanie wyrazu do kategorii (wielu)
- 5. ile zgadłeś a ile nie odgadłeś / procentowo lub ilościowo
 
  6.zaznaczanie wyboru gry jak w categorii i słówkach
  7.poprawić przypisanie słówek do kategorii
+
+ firebase deploy --only hosting
 
 

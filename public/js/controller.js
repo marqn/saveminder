@@ -81,12 +81,7 @@ app.controller('appCtrl', ["$scope", "$location", "Auth", "dataAccess",
 
 app.controller('indexCtrl', function ($scope, $interval) {
     $scope.time = new Date();
-    $interval(function () {
-        $scope.time = new Date();
-    }, 1000);
 
-
-    $scope.$broadcast('timer-start');
     // sprawdz ilość słówek
     //      jeśli zero dodaj info o dodaniu jakichś i utwórz kategorię main
 
@@ -98,6 +93,7 @@ app.controller('learnCtrl', ["$scope", "dataAccess", "gameConfiguration",
         $scope.page = 'select games mode';
 
         $scope.gameConfiguration = gameConfiguration;
+        $scope.categories = dataAccess.connectArray('categories');
 
         // pobiera liczbę wszystkich wyrazów
         var list = dataAccess.connectArray('words');
@@ -112,6 +108,18 @@ app.controller('learnCtrl', ["$scope", "dataAccess", "gameConfiguration",
             $scope.page = 'running game';
         };
 
+        $scope.setCategory = function (val) {
+            $scope.gameConfiguration.category = val; 
+        };
+        
+        $scope.getCategory = function()
+        {
+            if(!$scope.gameConfiguration.category)
+                return "Select category";
+            else
+                return $scope.gameConfiguration.category.categoryName;
+        }
+
     }
 ]);
 
@@ -123,7 +131,13 @@ app.controller('managerCtrl', ["$scope", "dataAccess", "selectedItem", "managerM
         $scope.words = dataAccess.connectArray('words');
         $scope.categories = dataAccess.connectArray('categories');
 
-        // jesli nie ma slowek wyswietl liste kategorii
+        $scope.getCategory = function (index) {
+            if ($scope.categories.$getRecord(index))
+                return $scope.categories.$getRecord(index).categoryName;
+            return 'empty';
+        };
+
+// jesli nie ma slowek wyswietl liste kategorii
 
         $scope.deleteWord = function (index) {
             var item = $scope.words[index];
@@ -139,7 +153,8 @@ app.controller('managerCtrl', ["$scope", "dataAccess", "selectedItem", "managerM
             selectedItem = item;
         };
     }
-]);
+])
+;
 
 app.controller("createUserCtrl", ["$scope", "Auth", function ($scope, Auth) {
     $scope.info = "Sign up";
@@ -204,18 +219,17 @@ app.controller('signInCtrl', ["$scope", "Auth", function ($scope, Auth) {
 app.controller('addWordCtrl', ["$scope", "dataAccess", "alert",
     function ($scope, dataAccess, alert) {
 
-        const CATEGORY_TITLE = "Select category";
-        $scope.categorySelected = CATEGORY_TITLE;
-
         var alertComp = alert.setText("Word added succesfully!");
 
         $scope.categories = dataAccess.connectArray('categories');
 
         $scope.saveWord = function () {
 
-            console.log('saveWord');
-            if ($scope.categorySelected == CATEGORY_TITLE) {
+            console.log($scope.categorySelected);
+
+            if (!$scope.categorySelected) {
                 // todo: alert z Select category!
+                console.log('categorySelected:' + $scope.categorySelected);
             }
             else {
                 var list = dataAccess.connectArray('words');
@@ -227,7 +241,7 @@ app.controller('addWordCtrl', ["$scope", "dataAccess", "alert",
                     refresh: 0,
                     win: 0,
                     lost: 0,
-                    category: $scope.categorySelected,
+                    category: $scope.categorySelected.$id,
                     data_added: Math.round(new Date().getTime())
                 };
 
@@ -238,6 +252,8 @@ app.controller('addWordCtrl', ["$scope", "dataAccess", "alert",
                     $scope.category = $scope.categorySelected;
                     alertComp.show();
 
+                    console.log(ref);
+
                 }, function (error) {
                     console.log("Error:", error);
                 });
@@ -246,11 +262,12 @@ app.controller('addWordCtrl', ["$scope", "dataAccess", "alert",
 
         $scope.setCategory = function (val) {
             $scope.categorySelected = val;
+            console.log($scope.categorySelected);
         };
 
         $scope.getCategory = function () {
             if (!$scope.categorySelected)
-                $scope.categorySelected = CATEGORY_TITLE;
+                $scope.categorySelected.categoryName = CATEGORY_TITLE;
         };
     }
 ]);
@@ -278,8 +295,6 @@ app.controller('addCategoryCtrl', ["$scope", "alert", "dataAccess",
 app.controller('editWordCtrl', ["$scope", "$routeParams", "dataAccess", "alert",
     function ($scope, $routeParams, dataAccess, alert) {
 
-        const CATEGORY_TITLE = "Select category";
-        $scope.categorySelected = CATEGORY_TITLE;
         $scope.categories = dataAccess.connectArray('categories');
 
         var alertComp = alert.setText("Word updated succesfully.");
@@ -298,17 +313,23 @@ app.controller('editWordCtrl', ["$scope", "$routeParams", "dataAccess", "alert",
             });
 
         $scope.saveWord = function () {
-            word.first = $scope.first;
-            word.second = $scope.second;
-            word.category = $scope.categorySelected;
+            if (!$scope.categorySelected) {
+                // todo: alert z Select category!
+                console.log('categorySelected:' + $scope.categorySelected);
+            }
+            else {
+                word.first = $scope.first;
+                word.second = $scope.second;
+                word.category = $scope.categorySelected.$id;
 
-            list[id] = word;
+                list[id] = word;
 
-            list.$save(word).then(function (ref) {
-                alertComp.show();
-            }).catch(function (error) {
-                console.error("updated failed:", list);
-            });
+                list.$save(word).then(function (ref) {
+                    alertComp.show();
+                }).catch(function (error) {
+                    console.error("updated failed:", list);
+                });
+            }
         };
 
         $scope.setCategory = function (val) {

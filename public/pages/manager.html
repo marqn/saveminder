@@ -33,7 +33,7 @@
                     <td>{{$index+1}}</td>
                     <td>{{word.first}}</td>
                     <td>{{word.second}}</td>
-                    <td>{{word.category}}</td>
+                    <td>{{getCategory(word.category)}}</td>
                     <td>{{word.elapsedTime / word.refresh | date:'ss:sss'}}</td>
                     <td>{{word.data_added | date:'dd-MM-yyyy'}}</td>
                     <td>{{word.refresh}}</td>
